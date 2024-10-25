@@ -1,0 +1,21 @@
+# Dependency directories
+node_modules/
+
+# Logs
+*.log
+
+# dotenv environment variable files
+#.env
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Mac files
+.DS_Store
+
+# Windows image file caches
+Thumbs.db
+
+# Windows shortcuts
+*.lnk
