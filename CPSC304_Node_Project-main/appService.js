@@ -99,6 +99,13 @@ async function initiateDemotable() {
                 name VARCHAR2(20)
             )
         `);
+
+         await connection.execute(
+             `INSERT INTO DEMOTABLE (id, name) VALUES (12, 'Owen')
+             `,
+            [],
+            { autoCommit: true }
+        );
         return true;
     }).catch(() => {
         return false;
