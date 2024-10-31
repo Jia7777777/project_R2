@@ -100,6 +100,7 @@ async function initiateDemotable() {
             )
         `);
 
+        // Draft for successfully initializing SQL tables in OracleDB
          await connection.execute(
              `INSERT INTO DEMOTABLE (id, name) VALUES (12, 'Owen')
              `,
@@ -140,6 +141,20 @@ async function updateNameDemotable(oldName, newName) {
     });
 }
 
+// DELETE Clause: Deleting ticket info for TPH1
+async function deleteFromTicketPurchaseHas(seatNum, cid) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `DELETE FROM TPH1 WHERE seatnumber=:seatNum AND cid=:cid`,
+            [seatNum, cid],
+            { autoCommit: true }
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function countDemotable() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
@@ -155,5 +170,6 @@ module.exports = {
     initiateDemotable, 
     insertDemotable, 
     updateNameDemotable, 
-    countDemotable
+    countDemotable,
+    deleteFromTicketPurchaseHas
 };

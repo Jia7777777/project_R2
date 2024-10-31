@@ -49,6 +49,17 @@ router.post("/update-name-demotable", async (req, res) => {
     }
 });
 
+// POST endpoint for deleting concert tickets from TPH1
+router.post("/delete-tickets", async (req, res) => {
+    const { seatNum, cid } = req.body;
+    const updateResult = await appService.deleteFromTicketPurchaseHas(seatNum, cid);
+    if (updateResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 router.get('/count-demotable', async (req, res) => {
     const tableCount = await appService.countDemotable();
     if (tableCount >= 0) {
