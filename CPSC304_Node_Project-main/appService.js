@@ -1,4 +1,6 @@
 const oracledb = require('oracledb');
+const fs = require('fs').promises;
+const path = require('path');
 const loadEnvFile = require('./utils/envUtil');
 
 const envVariables = loadEnvFile('./.env');
@@ -86,26 +88,20 @@ async function fetchDemotableFromDb() {
 }
 
 async function initiateDemotable() {
+    const filePath = path.resolve(__dirname, 'm4_sql.sql');
+    const sqlStatements = await fs.readFile(filePath, 'utf8');
     return await withOracleDB(async (connection) => {
-        try {
-            await connection.execute(`DROP TABLE DEMOTABLE`);
-        } catch(err) {
-            console.log('Table might not exist, proceeding to create...');
+        const statements = sqlStatements.split(';');
+        for (const statement of statements) {
+            if(statement.trim()) {
+                try{
+                    await connection.execute(statement.trim(), [], { autoCommit: true });
+                } catch (err) {
+                    // continue
+                }
+
+            }
         }
-
-        const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
-            )
-        `);
-
-         await connection.execute(
-             `INSERT INTO DEMOTABLE (id, name) VALUES (12, 'Owen')
-             `,
-            [],
-            { autoCommit: true }
-        );
         return true;
     }).catch(() => {
         return false;
