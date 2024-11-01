@@ -125,11 +125,12 @@ async function insertDemotable(id, name) {
     });
 }
 
-async function updateFromTicketPurchaseHas(oldName, newName) {
+// UPDATE Clause: Update ticket info for TPH1
+async function updateFromTicketPurchaseHas(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `UPDATE DEMOTABLE SET name=:newName where name=:oldName`,
-            [newName, oldName],
+            `UPDATE TPH1 SET paymentmethod = :paymentmethod, paymentlocation = :paymentlocation, email = :email, seatlocation = :seatlocation where seatnumber = :seatnumber AND cid = :cid`,
+            [paymentmethod, paymentlocation, email, seatlocation, seatnumber, cid],
             { autoCommit: true }
         );
 
