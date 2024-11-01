@@ -1,4 +1,6 @@
 const oracledb = require('oracledb');
+const fs = require('fs').promises;
+const path = require('path');
 const loadEnvFile = require('./utils/envUtil');
 
 const envVariables = loadEnvFile('./.env');
@@ -85,27 +87,24 @@ async function fetchDemotableFromDb() {
     });
 }
 
-async function initiateDemotable() {
+// Initiate all data in sql script
+async function initiateData() {
+    const filePath = path.resolve(__dirname, 'm4_sql.sql');
+    const sqlStatements = await fs.readFile(filePath, 'utf8');
     return await withOracleDB(async (connection) => {
-        try {
-            await connection.execute(`DROP TABLE DEMOTABLE`);
-        } catch(err) {
-            console.log('Table might not exist, proceeding to create...');
+        const statements = sqlStatements.split(';');
+        let promises = [];
+        for (const statement of statements) {
+            if(statement.trim()) {
+                promises.push(connection.execute(statement.trim(), [], { autoCommit: true }))
+            }
         }
-
-        const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
-            )
-        `);
-
-         await connection.execute(
-             `INSERT INTO DEMOTABLE (id, name) VALUES (12, 'Owen')
-             `,
-            [],
-            { autoCommit: true }
-        );
+        try {
+            await Promise.allSettled(promises);
+        }
+        catch (err) {
+            // should not come here    
+        }
         return true;
     }).catch(() => {
         return false;
@@ -152,7 +151,7 @@ async function countDemotable() {
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
-    initiateDemotable, 
+    initiateData, 
     insertDemotable, 
     updateNameDemotable, 
     countDemotable
