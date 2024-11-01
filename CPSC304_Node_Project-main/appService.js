@@ -87,20 +87,23 @@ async function fetchDemotableFromDb() {
     });
 }
 
-async function initiateDemotable() {
+// Initiate all data in sql script
+async function initiateData() {
     const filePath = path.resolve(__dirname, 'm4_sql.sql');
     const sqlStatements = await fs.readFile(filePath, 'utf8');
     return await withOracleDB(async (connection) => {
         const statements = sqlStatements.split(';');
+        let promises = [];
         for (const statement of statements) {
             if(statement.trim()) {
-                try{
-                    await connection.execute(statement.trim(), [], { autoCommit: true });
-                } catch (err) {
-                    // continue
-                }
-
+                promises.push(connection.execute(statement.trim(), [], { autoCommit: true }))
             }
+        }
+        try {
+            await Promise.allSettled(promises);
+        }
+        catch (err) {
+            // should not come here    
         }
         return true;
     }).catch(() => {
@@ -148,7 +151,7 @@ async function countDemotable() {
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
-    initiateDemotable, 
+    initiateData, 
     insertDemotable, 
     updateNameDemotable, 
     countDemotable
