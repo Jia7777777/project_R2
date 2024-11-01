@@ -106,12 +106,12 @@ async function initiateData() {
             // should not come here    
         }
 
-        const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
-            )
-        `);
+        // const result = await connection.execute(`
+        //     CREATE TABLE DEMOTABLE (
+        //         id NUMBER PRIMARY KEY,
+        //         name VARCHAR2(20)
+        //     )
+        // `);
 
         // Draft for successfully initializing SQL tables in OracleDB
         //  await connection.execute(
