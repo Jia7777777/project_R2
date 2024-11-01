@@ -125,7 +125,7 @@ async function insertDemotable(id, name) {
     });
 }
 
-async function updateNameDemotable(oldName, newName) {
+async function updateFromTicketPurchaseHas(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `UPDATE DEMOTABLE SET name=:newName where name=:oldName`,
@@ -153,6 +153,6 @@ module.exports = {
     fetchDemotableFromDb,
     initiateData, 
     insertDemotable, 
-    updateNameDemotable, 
+    updateFromTicketPurchaseHas, 
     countDemotable
 };

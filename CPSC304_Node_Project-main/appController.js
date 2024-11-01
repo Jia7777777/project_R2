@@ -21,7 +21,7 @@ router.get('/demotable', async (req, res) => {
 });
 
 // POST endpoint for initiate all data in sql script
-router.post("/initiate-demotable", async (req, res) => {
+router.post("/initiate-data", async (req, res) => {
     const initiateResult = await appService.initiateData();
     if (initiateResult) {
         res.json({ success: true });
@@ -40,9 +40,9 @@ router.post("/insert-demotable", async (req, res) => {
     }
 });
 
-router.post("/update-name-demotable", async (req, res) => {
+router.post("/update-tickets", async (req, res) => {
     const { oldName, newName } = req.body;
-    const updateResult = await appService.updateNameDemotable(oldName, newName);
+    const updateResult = await appService.updateFromTicketPurchaseHas(oldName, newName);
     if (updateResult) {
         res.json({ success: true });
     } else {

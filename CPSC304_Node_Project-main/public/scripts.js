@@ -64,17 +64,17 @@ async function fetchAndDisplayUsers() {
 
 // This function resets or initializes the demotable.
 async function resetDemotable() {
-    const response = await fetch("/initiate-demotable", {
+    const response = await fetch("/initiate-data", {
         method: 'POST'
     });
     const responseData = await response.json();
 
     if (responseData.success) {
         const messageElement = document.getElementById('resetResultMsg');
-        messageElement.textContent = "demotable initiated successfully!";
+        messageElement.textContent = "All data initiated successfully!";
         fetchTableData();
     } else {
-        alert("Error initiating table!");
+        alert("Error initiating data!");
     }
 }
 
