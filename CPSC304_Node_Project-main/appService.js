@@ -126,16 +126,17 @@ async function initiateData() {
     });
 }
 
-async function insertDemotable(id, name) {
+async function insertTPH(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO DEMOTABLE (id, name) VALUES (:id, :name)`,
-            [id, name],
+            `INSERT INTO TPH1 (seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation) VALUES (:seatnumber, :cid, :paymentmethod, :paymentlocation, :email, :seatlocation)`,
+            [seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation],
             { autoCommit: true }
         );
 
         return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
+    }).catch((e) => {
+        console.log(`error${e}`);
         return false;
     });
 }
@@ -182,7 +183,7 @@ module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
     initiateData, 
-    insertDemotable, 
+    insertTPH, 
     updateFromTicketPurchaseHas, 
     countDemotable,
     deleteFromTicketPurchaseHas

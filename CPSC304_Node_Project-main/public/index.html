@@ -51,9 +51,38 @@
     <br><hr><br> <!-- ========================================================================= -->
 
     <h2> Insert Values into CBook </h2>
-    <form id="insertDemotable">
-        ID: <input type="number" id="insertId" placeholder="Enter ID" required> <br><br>
-        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>
+    <form id="insertTPH">
+        seatNumber: <input type="number" id="insertSeatNumber" placeholder="Enter seatNumber" required> <br><br>
+        cid: <input type="number" id="insertcid" placeholder="Enter cid" required> <br><br>
+        email: <input type="text" id="insertEmail" placeholder="Enter email" required> <br><br>
+        <!-- price: <input type="text" id="insertPrice" placeholder="Enter price" maxlength="20"> <br><br> -->
+        
+        <label for="dropdown_paymentmethod">Choose a paymentmethod:</label>
+        <select id="dropdown_paymentmethod" name="option" required>
+            <option value="default"></option>
+            <option value="Debit">Debit</option>
+            <option value="Credit">Credit</option>
+            <option value="Cash">Cash</option>
+        </select>
+        <br><br>
+
+        <label for="dropdown_paymentlocation">Choose a paymentlocation:</label>
+        <select id="dropdown_paymentlocation" name="option" required>
+            <option value="default"></option>
+            <option value="Online">Online</option>
+            <option value="Offline">Offline</option>
+        </select>
+        <br><br>
+
+        <label for="dropdown_seatlocation">Choose a seatlocation:</label>
+        <select id="dropdown_seatlocation" name="option" required>
+            <option value="default"></option>
+            <option value="Courtside">Courtside</option>
+            <option value="Middle Bowl">Middle Bowl</option>
+            <option value="Lower Bowl">Lower Bowl</option>
+            <option value="Suite">Suite</option>
+        </select>
+        <br><br>
 
         <button type="submit"> insert </button> <br>
     </form>

@@ -30,9 +30,11 @@ router.post("/initiate-data", async (req, res) => {
     }
 });
 
-router.post("/insert-demotable", async (req, res) => {
-    const { id, name } = req.body;
-    const insertResult = await appService.insertDemotable(id, name);
+router.post("/insert-TPH", async (req, res) => {
+    const { seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation } = req.body;
+    console.log(`Controller ${seatnumber}, ${cid}, ${paymentmethod}`);
+
+    const insertResult = await appService.insertTPH(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation);
     if (insertResult) {
         res.json({ success: true });
     } else {
