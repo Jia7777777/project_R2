@@ -20,8 +20,8 @@ router.get('/demotable', async (req, res) => {
     res.json({data: tableContent});
 });
 
-// POST endpoint for initiate all data in sql script
-router.post("/initiate-demotable", async (req, res) => {
+// POST endpoint for initiating all data in sql script
+router.post("/initiate-data", async (req, res) => {
     const initiateResult = await appService.initiateData();
     if (initiateResult) {
         res.json({ success: true });
@@ -40,9 +40,10 @@ router.post("/insert-demotable", async (req, res) => {
     }
 });
 
-router.post("/update-name-demotable", async (req, res) => {
-    const { oldName, newName } = req.body;
-    const updateResult = await appService.updateNameDemotable(oldName, newName);
+// POST endpoint for updating concert tickets in TPH1
+router.post("/update-tickets", async (req, res) => {
+    const { seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation } = req.body;
+    const updateResult = await appService.updateFromTicketPurchaseHas(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation);
     if (updateResult) {
         res.json({ success: true });
     } else {
