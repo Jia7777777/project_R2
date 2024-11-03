@@ -70,7 +70,7 @@ async function initiateAllData() {
     const responseData = await response.json();
 
     if (responseData.success) {
-        const messageElement = document.getElementById('resetResultMsg');
+        const messageElement = document.getElementById('initiateResultMsg');
         messageElement.textContent = "All data are initiated successfully!";
         fetchTableData();
     } else {
