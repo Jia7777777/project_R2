@@ -62,16 +62,16 @@ async function fetchAndDisplayUsers() {
     });
 }
 
-// This function resets or initializes the demotable.
-async function resetDemotable() {
+// This function initiates all data.
+async function initiateAllData() {
     const response = await fetch("/initiate-data", {
         method: 'POST'
     });
     const responseData = await response.json();
 
     if (responseData.success) {
-        const messageElement = document.getElementById('resetResultMsg');
-        messageElement.textContent = "All data initiated successfully!";
+        const messageElement = document.getElementById('initiateResultMsg');
+        messageElement.textContent = "All data are initiated successfully!";
         fetchTableData();
     } else {
         alert("Error initiating data!");
@@ -170,7 +170,7 @@ async function countDemotable() {
 window.onload = function() {
     checkDbConnection();
     fetchTableData();
-    document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
+    document.getElementById("initiateAllData").addEventListener("click", initiateAllData);
     document.getElementById("insertTPH").addEventListener("submit", insertTPH);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
