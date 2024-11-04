@@ -8,25 +8,26 @@
     <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
     <link rel="stylesheet" href="styles.css">  
 
-    <title>Database Application</title>
+    <title>Ticket Management Service</title>
 </head>
 <body>
     <!-- ===================================================================================== -->
     <!-- Display the current status of the database connection. 
          !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
          -->
-    <h1>Database Connection Status: 
+    <h1 class="header">Welcome to CBook</h1>
+    <h5>Database Connection Status: 
         <!-- An in-line placeholder to display connection status. -->
         <span id="dbStatus"> </span>
         <!-- A loading GIF, will be hided once get the status. -->
         <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
-    </h1>
+    </h5>
 
     <br><hr><br> <!-- ========================================================================= -->
 
     <!-- Show 'Demotable'. 
         Data will be fetched and inserted here dynamically using JavaScript. -->
-    <h2>Show Demotable</h2>
+    <h2>Test Insert</h2>
     <table id="demotable" border="1">
         <thead>
             <tr>
@@ -41,18 +42,47 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Initiate All Data</h2>
+    <h2>Initiate CBook Data</h2>
     <p>If you wish to initiate all data press on the initiate button. If this is the first time you're running this page, you MUST use initiate.</p>
-    <button id="initiateAllData"> initiate </button> <br>
+    <button id="initiateAllData"> Populate Data </button> <br>
     <!-- A placeholder to display messages related to the initiate operation. -->
     <div id="initiateResultMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2> Insert Values into DemoTable </h2>
-    <form id="insertDemotable">
-        ID: <input type="number" id="insertId" placeholder="Enter ID" required> <br><br>
-        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>
+    <h2> Insert Values into CBook </h2>
+    <form id="insertTPH">
+        seatNumber: <input type="number" id="insertSeatNumber" placeholder="Enter seatNumber" required> <br><br>
+        cid: <input type="number" id="insertcid" placeholder="Enter cid" required> <br><br>
+        email: <input type="text" id="insertEmail" placeholder="Enter email" required> <br><br>
+        <!-- price: <input type="text" id="insertPrice" placeholder="Enter price" maxlength="20"> <br><br> -->
+        
+        <label for="dropdown_paymentmethod">Choose a paymentmethod:</label>
+        <select id="dropdown_paymentmethod" name="option" required>
+            <option value="default"></option>
+            <option value="Debit">Debit</option>
+            <option value="Credit">Credit</option>
+            <option value="Cash">Cash</option>
+        </select>
+        <br><br>
+
+        <label for="dropdown_paymentlocation">Choose a paymentlocation:</label>
+        <select id="dropdown_paymentlocation" name="option" required>
+            <option value="default"></option>
+            <option value="Online">Online</option>
+            <option value="Offline">Offline</option>
+        </select>
+        <br><br>
+
+        <label for="dropdown_seatlocation">Choose a seatlocation:</label>
+        <select id="dropdown_seatlocation" name="option" required>
+            <option value="default"></option>
+            <option value="Courtside">Courtside</option>
+            <option value="Middle Bowl">Middle Bowl</option>
+            <option value="Lower Bowl">Lower Bowl</option>
+            <option value="Suite">Suite</option>
+        </select>
+        <br><br>
 
         <button type="submit"> insert </button> <br>
     </form>
@@ -60,7 +90,7 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Update Name in DemoTable</h2>
+    <h2>Update Name in CBook</h2>
     <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
     <form id="updataNameDemotable">
         Old Name: <input type="text" id="updateOldName" placeholder="Enter Old Name" required> <br><br>
@@ -73,7 +103,7 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Count the Tuples in DemoTable</h2>
+    <h2>Count the Tuples in CBook</h2>
     <button id="countDemotable"> count </button> <br><br>
     <!-- A placeholder to display the count result. -->
     <div id="countResultMsg"></div> <br>

@@ -55,11 +55,11 @@ button {
 }
 
 button:hover {
-    background-color: rgb(22, 87, 207);
+    background-color: rgb(105, 22, 207);
 }
 
 button:active {
-    background-color: rgb(12, 67, 187);
+    background-color: rgb(117, 12, 187);
 }
 
 /* INPUT STYLES */
@@ -83,4 +83,19 @@ input::placeholder, textarea::placeholder {
 .loading-gif {
     height: 1em;
     vertical-align: middle;
+}
+
+.header {
+    font-family: cursive;
+    font-size: 3rem;
+      animation: colorChange 3s ease-in-out infinite;
+
+}
+
+@keyframes colorChange {
+  0% { color: #FF5733; }    /* Start with an orange color */
+  25% { color: #51dadd; }   /* Transition to green */
+  50% { color: #3357FF; }   /* Transition to blue */
+  75% { color: #ab14b3; }   /* Transition to pink */
+  100% { color: #FF5733; }   /* Transition to pink */
 }

@@ -79,20 +79,29 @@ async function initiateAllData() {
 }
 
 // Inserts new records into the demotable.
-async function insertDemotable(event) {
+async function insertTPH(event) {
     event.preventDefault();
+    const seatNumberValue = document.getElementById('insertSeatNumber').value;
+    const cidValue = document.getElementById('insertcid').value;
+    const paymentmethodValue = document.getElementById('dropdown_paymentmethod').value;
+    const paymentlocationValue = document.getElementById('dropdown_paymentlocation').value;
+    const emailValue = document.getElementById('insertEmail').value;
+    // const priceValue = document.getElementById('insertPrice').value;
+    const seatlocationValue = document.getElementById('dropdown_seatlocation').value;
 
-    const idValue = document.getElementById('insertId').value;
-    const nameValue = document.getElementById('insertName').value;
-
-    const response = await fetch('/insert-demotable', {
+    const response = await fetch('/insert-TPH', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            id: idValue,
-            name: nameValue
+            seatnumber: seatNumberValue,
+            cid: cidValue,
+            paymentmethod: paymentmethodValue,
+            paymentlocation: paymentlocationValue,
+            email: emailValue,
+            // price: priceValue,
+            seatlocation: seatlocationValue
         })
     });
 
@@ -162,7 +171,7 @@ window.onload = function() {
     checkDbConnection();
     fetchTableData();
     document.getElementById("initiateAllData").addEventListener("click", initiateAllData);
-    document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
+    document.getElementById("insertTPH").addEventListener("submit", insertTPH);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };

@@ -30,9 +30,11 @@ router.post("/initiate-data", async (req, res) => {
     }
 });
 
-router.post("/insert-demotable", async (req, res) => {
-    const { id, name } = req.body;
-    const insertResult = await appService.insertDemotable(id, name);
+router.post("/insert-TPH", async (req, res) => {
+    const { seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation } = req.body;
+    console.log(`Controller ${seatnumber}, ${cid}, ${paymentmethod}`);
+
+    const insertResult = await appService.insertTPH(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation);
     if (insertResult) {
         res.json({ success: true });
     } else {
@@ -44,6 +46,17 @@ router.post("/insert-demotable", async (req, res) => {
 router.post("/update-tickets", async (req, res) => {
     const { seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation } = req.body;
     const updateResult = await appService.updateFromTicketPurchaseHas(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation);
+    if (updateResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+// POST endpoint for deleting concert tickets from TPH1
+router.post("/delete-tickets", async (req, res) => {
+    const { seatNum, cid } = req.body;
+    const updateResult = await appService.deleteFromTicketPurchaseHas(seatNum, cid);
     if (updateResult) {
         res.json({ success: true });
     } else {

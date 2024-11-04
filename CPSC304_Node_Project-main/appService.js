@@ -105,22 +105,38 @@ async function initiateData() {
         catch (err) {
             // should not come here    
         }
+
+        // const result = await connection.execute(`
+        //     CREATE TABLE DEMOTABLE (
+        //         id NUMBER PRIMARY KEY,
+        //         name VARCHAR2(20)
+        //     )
+        // `);
+
+        // Draft for successfully initializing SQL tables in OracleDB
+        //  await connection.execute(
+        //      `INSERT INTO DEMOTABLE (id, name) VALUES (12, 'Owen')
+        //      `,
+        //     [],
+        //     { autoCommit: true }
+        // );
         return true;
     }).catch(() => {
         return false;
     });
 }
 
-async function insertDemotable(id, name) {
+async function insertTPH(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO DEMOTABLE (id, name) VALUES (:id, :name)`,
-            [id, name],
+            `INSERT INTO TPH1 (seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation) VALUES (:seatnumber, :cid, :paymentmethod, :paymentlocation, :email, :seatlocation)`,
+            [seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation],
             { autoCommit: true }
         );
 
         return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
+    }).catch((e) => {
+        console.log(`error${e}`);
         return false;
     });
 }
@@ -140,6 +156,20 @@ async function updateFromTicketPurchaseHas(seatnumber, cid, paymentmethod, payme
     });
 }
 
+// DELETE Clause: Deleting ticket info for TPH1
+async function deleteFromTicketPurchaseHas(seatNum, cid) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `DELETE FROM TPH1 WHERE seatnumber=:seatNum AND cid=:cid`,
+            [seatNum, cid],
+            { autoCommit: true }
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function countDemotable() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
@@ -153,7 +183,8 @@ module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
     initiateData, 
-    insertDemotable, 
+    insertTPH, 
     updateFromTicketPurchaseHas, 
-    countDemotable
+    countDemotable,
+    deleteFromTicketPurchaseHas
 };
