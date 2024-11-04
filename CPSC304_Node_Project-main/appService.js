@@ -157,11 +157,11 @@ async function updateFromTicketPurchaseHas(seatnumber, cid, paymentmethod, payme
 }
 
 // DELETE Clause: Deleting ticket info for TPH1
-async function deleteFromTicketPurchaseHas(seatNum, cid) {
+async function deleteFromTicketPurchaseHas(seatnumber, cid) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `DELETE FROM TPH1 WHERE seatnumber=:seatNum AND cid=:cid`,
-            [seatNum, cid],
+            `DELETE FROM TPH1 WHERE seatnumber = :seatnumber AND cid = :cid`,
+            [seatnumber, cid],
             { autoCommit: true }
         );
         return result.rowsAffected && result.rowsAffected > 0;

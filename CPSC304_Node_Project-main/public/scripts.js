@@ -116,6 +116,30 @@ async function insertTPH(event) {
     }
 }
 
+async function deleteFromTPH(event) {
+    event.preventDefault();
+    const seatNumberValue = document.getElementById('deleteSeatNumber').value;
+    const cidValue = document.getElementById('deletecid').value;
+
+     const response = await fetch('/delete-tickets', {
+         method: 'POST', // Technically 'DELETE' but I delete data in the sense of updating the existing database.
+         headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ seatnumber: seatNumberValue, cid: cidValue })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('deleteNameResultMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "Data deleted successfully!";
+        fetchTableData();
+    } else {
+        messageElement.textContent = "Error deleting data!";
+    }
+}
+
 // Updates names in the demotable.
 async function updateNameDemotable(event) {
     event.preventDefault();
@@ -172,6 +196,7 @@ window.onload = function() {
     fetchTableData();
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertTPH").addEventListener("submit", insertTPH);
+    document.getElementById("deleteFromTPH").addEventListener("submit", deleteFromTPH);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };

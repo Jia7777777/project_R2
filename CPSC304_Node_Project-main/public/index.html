@@ -50,7 +50,7 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2> Insert Values into CBook </h2>
+    <h2> Insert Into CBook Tickets </h2>
     <form id="insertTPH">
         seatNumber: <input type="number" id="insertSeatNumber" placeholder="Enter seatNumber" required> <br><br>
         cid: <input type="number" id="insertcid" placeholder="Enter cid" required> <br><br>
@@ -84,9 +84,19 @@
         </select>
         <br><br>
 
-        <button type="submit"> insert </button> <br>
+        <button type="submit" style="margin-bottom: 1rem; background-color: #04AA6D;"> Add to Cart </button> <br>
     </form>
     <div id="insertResultMsg"></div>
+    <br><hr><br> 
+
+    <h2> Delete From CBook Tickets </h2>
+    <form id="deleteFromTPH">
+        cid: <input type="number" id="deletecid" placeholder="Enter cid" required> <br><br>
+        seatNumber: <input type="number" id="deleteSeatNumber" placeholder="Enter Seat Number" required> <br><br>
+        <button type="submit" style="background-color: #f44336;"> Delete </button> <br>
+    </form>
+    <div id="deleteNameResultMsg"></div>
+
 
     <br><hr><br> <!-- ========================================================================= -->
 

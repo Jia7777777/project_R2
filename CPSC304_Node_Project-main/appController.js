@@ -32,7 +32,6 @@ router.post("/initiate-data", async (req, res) => {
 
 router.post("/insert-TPH", async (req, res) => {
     const { seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation } = req.body;
-    console.log(`Controller ${seatnumber}, ${cid}, ${paymentmethod}`);
 
     const insertResult = await appService.insertTPH(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation);
     if (insertResult) {
@@ -55,9 +54,9 @@ router.post("/update-tickets", async (req, res) => {
 
 // POST endpoint for deleting concert tickets from TPH1
 router.post("/delete-tickets", async (req, res) => {
-    const { seatNum, cid } = req.body;
-    const updateResult = await appService.deleteFromTicketPurchaseHas(seatNum, cid);
-    if (updateResult) {
+    const { seatnumber, cid } = req.body;
+    const afterDeletedResult = await appService.deleteFromTicketPurchaseHas(seatnumber, cid);
+    if (afterDeletedResult) {
         res.json({ success: true });
     } else {
         res.status(500).json({ success: false });
