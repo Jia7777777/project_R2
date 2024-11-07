@@ -78,7 +78,7 @@ async function resetDemotable() {
     }
 }
 
-// Inserts new records into the demotable.
+// Inserts new records into TPH1.
 async function insertTPH(event) {
     event.preventDefault();
     const seatNumberValue = document.getElementById('insertSeatNumber').value;
@@ -116,14 +116,15 @@ async function insertTPH(event) {
     }
 }
 
+// Inserts records from TPH1.
 async function deleteFromTPH(event) {
     event.preventDefault();
     const seatNumberValue = document.getElementById('deleteSeatNumber').value;
     const cidValue = document.getElementById('deletecid').value;
 
-     const response = await fetch('/delete-tickets', {
-         method: 'POST', // Technically 'DELETE' but I delete data in the sense of updating the existing database.
-         headers: {
+    const response = await fetch('/delete-tickets', {
+        method: 'POST', // Technically 'DELETE' but I delete data in the sense of updating the existing database.
+        headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ seatnumber: seatNumberValue, cid: cidValue })
@@ -137,6 +138,36 @@ async function deleteFromTPH(event) {
         fetchTableData();
     } else {
         messageElement.textContent = "Error deleting data!";
+    }
+}
+
+async function retrieveSoldSeatNumbers(event) {
+    // TODO: 
+    event.preventDefault();
+    const titleValue = document.getElementById('concertTitle').value;
+
+    const response = await fetch('/get-unsold-seatnumber', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title: titleValue })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('soldResultMsg');
+    const list = document.getElementById('listOfUnsoldTickets');
+
+    if (responseData.success && responseData.seatnumbers) {
+        messageElement.textContent = `Here are the sold ticket numbers for ${titleValue}:`;
+        responseData.seatnumbers.forEach((seatNumber) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = seatNumber;
+            list.appendChild(listItem);
+        });
+        fetchTableData();
+    } else {
+        messageElement.textContent = "Error retrieving data!";
     }
 }
 
@@ -197,6 +228,7 @@ window.onload = function() {
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertTPH").addEventListener("submit", insertTPH);
     document.getElementById("deleteFromTPH").addEventListener("submit", deleteFromTPH);
+    document.getElementById("soldFromTPH").addEventListener("submit", retrieveSoldSeatNumbers);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };

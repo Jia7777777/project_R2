@@ -63,6 +63,17 @@ router.post("/delete-tickets", async (req, res) => {
     }
 });
 
+// POST endpoint for joining concert and TPH1
+router.post("/get-unsold-seatnumber", async (req, res) => {
+    const { title } = req.body;
+    const seatnumbers = await appService.joinTPH1ANDConcert(title);
+    if (seatnumbers.length > 0) {
+        res.json({ success: true, seatnumbers });
+    } else {
+        res.json({ success: true, seatnumbers: [] });
+    }
+})
+
 router.get('/count-demotable', async (req, res) => {
     const tableCount = await appService.countDemotable();
     if (tableCount >= 0) {

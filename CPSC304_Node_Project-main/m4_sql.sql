@@ -31,6 +31,12 @@ CREATE TABLE Police (
   FOREIGN KEY (erid) REFERENCES EmergencyResponse(erid)
 );
 
+-- SELECT * FROM TPH1
+-- WHERE seatnumber=2 AND email=3
+
+-- seatnumber=2, email=3
+-- seatnumber=2 AND email=3
+
 
 CREATE TABLE Doctor (
   erid NUMBER(4, 0),
@@ -46,6 +52,11 @@ CREATE TABLE Concert (
   title VARCHAR2(50),
   PRIMARY KEY (cid)
 );
+
+-- SELECT t.seatnumber
+-- FROM TPH1 t, Concert c
+-- WHERE t.cid = c.cid
+-- AND c.title = :title
 
 
 CREATE TABLE Audience (

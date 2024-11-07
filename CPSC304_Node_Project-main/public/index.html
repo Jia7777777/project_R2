@@ -83,7 +83,6 @@
             <option value="Suite">Suite</option>
         </select>
         <br><br>
-
         <button type="submit" style="margin-bottom: 1rem; background-color: #04AA6D;"> Add to Cart </button> <br>
     </form>
     <div id="insertResultMsg"></div>
@@ -110,7 +109,16 @@
     </form>
     <!-- A placeholder to display messages related to the update operation. -->
     <div id="updateNameResultMsg"></div>
+    <br><hr><br> <!-- ========================================================================= -->
 
+
+    <h2> Retrieve Sold Tickets (for admins) </h2>
+    <form id="soldFromTPH">
+        Concert Title: <input type="text" id="concertTitle" placeholder="Enter concert title" required> <br><br>
+        <button type="submit" style="background-color: #04AA6D;"> Retrieve </button> <br>
+    </form>
+    <h4 id="soldResultMsg"></h4>
+    <div id="listOfUnsoldTickets"></div>
     <br><hr><br> <!-- ========================================================================= -->
 
     <h2>Count the Tuples in CBook</h2>
