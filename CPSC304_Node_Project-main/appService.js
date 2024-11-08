@@ -78,9 +78,9 @@ async function testOracleConnection() {
     });
 }
 
-async function fetchDemotableFromDb() {
+async function fetchTPH1FromDb() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM DEMOTABLE');
+        const result = await connection.execute('SELECT * FROM TPH1');
         return result.rows;
     }).catch(() => {
         return [];
@@ -181,7 +181,7 @@ async function countDemotable() {
 
 module.exports = {
     testOracleConnection,
-    fetchDemotableFromDb,
+    fetchTPH1FromDb,
     initiateData, 
     insertTPH, 
     updateFromTicketPurchaseHas, 
