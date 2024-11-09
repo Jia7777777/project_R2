@@ -172,31 +172,59 @@ async function retrieveSoldSeatNumbers(event) {
 }
 
 // Updates names in the demotable.
-async function updateNameDemotable(event) {
+async function updateTPH1(event) {
     event.preventDefault();
 
-    const oldNameValue = document.getElementById('updateOldName').value;
-    const newNameValue = document.getElementById('updateNewName').value;
+    const seatNumberValue = document.getElementById('updateSeatNumber').value;
+    const cidValue = document.getElementById('updatecid').value;
+    let emailValue = document.getElementById('updateEmail').value;
+    let paymentmethodValue = document.getElementById('update_dropdown_paymentmethod').value;
+    let paymentlocationValue = document.getElementById('update_dropdown_paymentlocation').value;
+    let seatlocationValue = document.getElementById('update_dropdown_seatlocation').value;
 
-    const response = await fetch('/update-name-demotable', {
+    const table = document.getElementById('TPH1');
+    const rows = table.querySelectorAll('tbody tr');
+    for (const row of rows) {
+        const cells = row.getElementsByTagName('td');
+        if (cells[0].textContent === seatNumberValue && cells[1].textContent === cidValue) {
+            if (emailValue === "") {
+                emailValue = cells[4].textContent;
+            }
+            if (paymentmethodValue === "default") {
+                paymentmethodValue = cells[2].textContent;
+            }
+            if (paymentlocationValue === "default") {
+                paymentlocationValue = cells[3].textContent;
+            }
+            if (seatlocationValue === "default") {
+                seatlocationValue = cells[5].textContent;
+            }
+            break;
+        }
+    }
+
+    const response = await fetch('/update-tickets', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            oldName: oldNameValue,
-            newName: newNameValue
+            seatnumber: seatNumberValue,
+            cid: cidValue,
+            paymentmethod: paymentmethodValue,
+            paymentlocation: paymentlocationValue,
+            email: emailValue,
+            seatlocation: seatlocationValue
         })
     });
 
+    const messageElement = document.getElementById('updateTPH1ResultMsg');
     const responseData = await response.json();
-    const messageElement = document.getElementById('updateNameResultMsg');
-
     if (responseData.success) {
-        messageElement.textContent = "Name updated successfully!";
+        messageElement.textContent = "Data updated successfully!";
         fetchTableData();
     } else {
-        messageElement.textContent = "Error updating name!";
+        messageElement.textContent = "Error updating data!";
     }
 }
 
@@ -229,7 +257,7 @@ window.onload = function() {
     document.getElementById("insertTPH").addEventListener("submit", insertTPH);
     document.getElementById("deleteFromTPH").addEventListener("submit", deleteFromTPH);
     document.getElementById("soldFromTPH").addEventListener("submit", retrieveSoldSeatNumbers);
-    document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
+    document.getElementById("updataTPH1").addEventListener("submit", updateTPH1);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
 

@@ -103,16 +103,45 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Update Name in CBook</h2>
-    <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
-    <form id="updataNameDemotable">
-        Old Name: <input type="text" id="updateOldName" placeholder="Enter Old Name" required> <br><br>
-        New Name: <input type="text" id="updateNewName" placeholder="Enter New Name" maxlength="20"> <br><br>
+    <h2>Update TPH1 in CBook</h2>
+    <p>If you leave email, paymentmethod, paymentlocation or seatlocation blank, then blank means no change.
+    </p>
+    <form id="updataTPH1">
+        seatNumber: <input type="number" id="updateSeatNumber" placeholder="Enter seatNumber" required> <br><br>
+        cid: <input type="number" id="updatecid" placeholder="Enter cid" required> <br><br>
+        email: <input type="text" id="updateEmail" placeholder="Enter email"> <br><br>
+        
+        <label for="update_dropdown_paymentmethod">Choose a paymentmethod:</label>
+        <select id="update_dropdown_paymentmethod" name="option">
+            <option value="default"></option>
+            <option value="Debit">Debit</option>
+            <option value="Credit">Credit</option>
+            <option value="Cash">Cash</option>
+        </select>
+        <br><br>
 
-        <button type="submit"> update </button> <br>
+        <label for="update_dropdown_paymentlocation">Choose a paymentlocation:</label>
+        <select id="update_dropdown_paymentlocation" name="option">
+            <option value="default"></option>
+            <option value="Online">Online</option>
+            <option value="Offline">Offline</option>
+        </select>
+        <br><br>
+
+        <label for="update_dropdown_seatlocation">Choose a seatlocation:</label>
+        <select id="update_dropdown_seatlocation" name="option">
+            <option value="default"></option>
+            <option value="Courtside">Courtside</option>
+            <option value="Middle Bowl">Middle Bowl</option>
+            <option value="Lower Bowl">Lower Bowl</option>
+            <option value="Suite">Suite</option>
+        </select>
+        <br><br>
+
+        <button type="submit"> Update </button> <br>
     </form>
     <!-- A placeholder to display messages related to the update operation. -->
-    <div id="updateNameResultMsg"></div>
+    <div id="updateTPH1ResultMsg"></div>
     <br><hr><br> <!-- ========================================================================= -->
 
 
