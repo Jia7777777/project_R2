@@ -149,7 +149,6 @@ async function updateFromTicketPurchaseHas(seatnumber, cid, paymentmethod, payme
             [paymentmethod, paymentlocation, email, seatlocation, seatnumber, cid],
             { autoCommit: true }
         );
-
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
