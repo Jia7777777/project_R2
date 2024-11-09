@@ -32,7 +32,6 @@ router.post("/initiate-data", async (req, res) => {
 
 router.post("/insert-TPH", async (req, res) => {
     const { seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation } = req.body;
-    console.log(`Controller ${seatnumber}, ${cid}, ${paymentmethod}`);
 
     const insertResult = await appService.insertTPH(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation);
     if (insertResult) {
@@ -55,14 +54,25 @@ router.post("/update-tickets", async (req, res) => {
 
 // POST endpoint for deleting concert tickets from TPH1
 router.post("/delete-tickets", async (req, res) => {
-    const { seatNum, cid } = req.body;
-    const updateResult = await appService.deleteFromTicketPurchaseHas(seatNum, cid);
-    if (updateResult) {
+    const { seatnumber, cid } = req.body;
+    const afterDeletedResult = await appService.deleteFromTicketPurchaseHas(seatnumber, cid);
+    if (afterDeletedResult) {
         res.json({ success: true });
     } else {
         res.status(500).json({ success: false });
     }
 });
+
+// POST endpoint for joining concert and TPH1
+router.post("/get-unsold-seatnumber", async (req, res) => {
+    const { title } = req.body;
+    const seatnumbers = await appService.joinTPH1ANDConcert(title);
+    if (seatnumbers.length > 0) {
+        res.json({ success: true, seatnumbers });
+    } else {
+        res.json({ success: true, seatnumbers: [] });
+    }
+})
 
 router.get('/count-demotable', async (req, res) => {
     const tableCount = await appService.countDemotable();

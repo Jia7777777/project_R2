@@ -157,17 +157,35 @@ async function updateFromTicketPurchaseHas(seatnumber, cid, paymentmethod, payme
 }
 
 // DELETE Clause: Deleting ticket info for TPH1
-async function deleteFromTicketPurchaseHas(seatNum, cid) {
+async function deleteFromTicketPurchaseHas(seatnumber, cid) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `DELETE FROM TPH1 WHERE seatnumber=:seatNum AND cid=:cid`,
-            [seatNum, cid],
+            `DELETE FROM TPH1 WHERE seatnumber = :seatnumber AND cid = :cid`,
+            [seatnumber, cid],
             { autoCommit: true }
         );
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
     });
+}
+
+// JOIN Clause: Join TPH1 and Concert and SELECT seat numbers that are sold out to the ticket server providing concert title
+async function joinTPH1ANDConcert(title) {
+    try {
+        return await withOracleDB(async (connection) => {
+            const query = `
+                SELECT t.seatnumber
+                FROM TPH1 t, Concert c
+                WHERE t.cid = c.cid AND c.title = '${title}'
+            `;
+
+            const result = await connection.execute(query, [], { autoCommit: true });
+            return result.rows && result.rows.length > 0 ? result.rows : [];
+        });
+    } catch (err) {
+        return [];
+    }
 }
 
 async function countDemotable() {
@@ -185,6 +203,7 @@ module.exports = {
     initiateData, 
     insertTPH, 
     updateFromTicketPurchaseHas, 
+    joinTPH1ANDConcert,
     countDemotable,
     deleteFromTicketPurchaseHas
 };
