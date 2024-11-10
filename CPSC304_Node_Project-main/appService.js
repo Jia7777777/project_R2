@@ -174,13 +174,13 @@ async function joinTPH1ANDConcert(title) {
     try {
         return await withOracleDB(async (connection) => {
             const query = `
-                SELECT t.seatnumber
+                SELECT t.seatnumber, t.seatlocation
                 FROM TPH1 t, Concert c
                 WHERE t.cid = c.cid AND c.title = '${title}'
             `;
 
             const result = await connection.execute(query, [], { autoCommit: true });
-            return result.rows && result.rows.length > 0 ? result.rows : [];
+            return result.rows.map(row => ({ seatnumber: row[0], seatlocation: row[1] }));
         });
     } catch (err) {
         return [];
