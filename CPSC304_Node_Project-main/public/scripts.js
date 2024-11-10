@@ -142,11 +142,10 @@ async function deleteFromTPH(event) {
 }
 
 async function retrieveSoldSeatNumbers(event) {
-    // TODO: 
     event.preventDefault();
     const titleValue = document.getElementById('concertTitle').value;
 
-    const response = await fetch('/get-unsold-seatnumber', {
+    const response = await fetch('/get-unsold-seatInfo', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -158,11 +157,11 @@ async function retrieveSoldSeatNumbers(event) {
     const messageElement = document.getElementById('soldResultMsg');
     const list = document.getElementById('listOfUnsoldTickets');
 
-    if (responseData.success && responseData.seatnumbers) {
+    if (responseData.success && responseData.seatInfo) {
         messageElement.textContent = `Here are the sold ticket numbers for ${titleValue}:`;
-        responseData.seatnumbers.forEach((seatNumber) => {
+        responseData.seatInfo.forEach(({ seatnumber, seatlocation }) => {
             const listItem = document.createElement('li');
-            listItem.textContent = seatNumber;
+            listItem.textContent = `Seat Number: ${seatnumber}, Location: ${seatlocation}`;
             list.appendChild(listItem);
         });
         fetchTableData();
