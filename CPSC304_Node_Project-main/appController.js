@@ -74,6 +74,22 @@ router.post("/get-unsold-seatInfo", async (req, res) => {
     }
 })
 
+router.post('/selectTPH', async (req, res) => {
+    const {parsedString} = req.body;
+    const filteredResult = await appService.selectTPH(parsedString);
+
+    if (filteredResult.length >= 0) {
+        res.json({ 
+            success: true,  
+            filteredResult: filteredResult
+        });
+    } else {
+        res.status(500).json({ 
+            success: false
+        });
+    }
+})
+
 router.get('/count-demotable', async (req, res) => {
     const tableCount = await appService.countDemotable();
     if (tableCount >= 0) {

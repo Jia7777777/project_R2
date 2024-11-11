@@ -54,6 +54,32 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
+    <h2>Filter CBook Data</h2>
+    <form id="selectTPH">
+        <p>When typing paymentmethod/paymentlocation/email/seatlocation, please surround the value with ''</p>
+        <div id="filterList">
+            <input type="text" id="input_0">
+            <select id="dropdown_0">
+                <option value="default"></option>
+                <option value="AND">AND</option>
+                <option value="OR">OR</option>
+            </select>
+        </div>
+        <br>
+        <button type="submit" style="margin-bottom: 1rem; background-color: #04AA6D;"> Find results </button> <br>
+    </form>
+    <!-- A placeholder to display messages after filtering. -->
+    <div id="selectResultMsg"></div>
+    <table id="filteredResult" border="1">
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
     <h2> Insert Into CBook Tickets </h2>
     <form id="insertTPH">
         seatNumber: <input type="number" id="insertSeatNumber" placeholder="Enter seatNumber" required> <br><br>

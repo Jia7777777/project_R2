@@ -196,6 +196,15 @@ async function countDemotable() {
     });
 }
 
+async function selectTPH(parsedString) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`SELECT * FROM TPH1 WHERE ${parsedString}`);
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchTPH1FromDb,
@@ -204,5 +213,6 @@ module.exports = {
     updateFromTicketPurchaseHas, 
     joinTPH1ANDConcert,
     countDemotable,
-    deleteFromTicketPurchaseHas
+    deleteFromTicketPurchaseHas,
+    selectTPH
 };

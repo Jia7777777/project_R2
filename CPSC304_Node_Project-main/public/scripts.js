@@ -54,9 +54,35 @@ async function fetchAndDisplayUsers() {
     }
 
     TPH1Content.forEach(user => {
-        const row = tableBody.insertRow();
-        user.forEach((field, index) => {
-            const cell = row.insertCell(index);
+        const row = tableBody.insertRow();      //create a new row
+        user.forEach((field, index) => { 
+            const cell = row.insertCell(index); //create a new cell
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches data from the demotable and displays it.
+async function fetchAndDisplayFiltered() {
+    const tableElement = document.getElementById('TPH1');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/TPH1', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const TPH1Content = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    TPH1Content.forEach(user => {
+        const row = tableBody.insertRow();      //create a new row
+        user.forEach((field, index) => { 
+            const cell = row.insertCell(index); //create a new cell
             cell.textContent = field;
         });
     });
@@ -86,7 +112,6 @@ async function insertTPH(event) {
     const paymentmethodValue = document.getElementById('dropdown_paymentmethod').value;
     const paymentlocationValue = document.getElementById('dropdown_paymentlocation').value;
     const emailValue = document.getElementById('insertEmail').value;
-    // const priceValue = document.getElementById('insertPrice').value;
     const seatlocationValue = document.getElementById('dropdown_seatlocation').value;
 
     const response = await fetch('/insert-TPH', {
@@ -245,6 +270,123 @@ async function countDemotable() {
     }
 }
 
+function createDropdownOptions(dropdown) {
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "default";
+    defaultOption.text = "";
+    dropdown.appendChild(defaultOption);
+
+    const optionAnd = document.createElement("option");
+    optionAnd.value = "AND";
+    optionAnd.text = "AND";
+    dropdown.appendChild(optionAnd);
+
+    const optionOr = document.createElement("option");
+    optionOr.value = "OR";
+    optionOr.text = "OR";
+    dropdown.appendChild(optionOr);
+}
+
+async function addDropdown(currDropdown) {
+    const filterList = document.getElementById("filterList");
+;
+    if(currDropdown.target.value !== "default" && currDropdown.target === filterList.lastElementChild) {    //the dropdown is selected with a value
+        const id = filterList.children.length/2;
+        
+        const textbox = document.createElement("input");
+        textbox.type = "text";
+        textbox.id = `input_${id}`;
+        filterList.appendChild(textbox);
+
+        const newDropdown = document.createElement("select");
+        newDropdown.id = `dropdown_${id}`;
+        newDropdown.addEventListener("change", addDropdown);
+        createDropdownOptions(newDropdown);
+
+        filterList.appendChild(newDropdown);
+    } else if (currDropdown.target.value === "default") {
+        //delete all the dropdown and textboxes after this
+        const start = Number((currDropdown.target.id.split("_"))[1])*2 + 1;
+
+        for (let i=filterList.children.length-1; i>start; i--) {
+            //delete at this position for length-start times
+            filterList.removeChild(filterList.lastElementChild);
+        }
+    };
+}
+
+//parse the text segmeents we got from the HTML form to a complete string
+function parseHTMtoString(HTMLdata) {
+    let parsedString = "";
+    for (const frag of HTMLdata) {
+        if (frag.value !== "default")
+            parsedString += frag.value + " ";
+    }
+    return parsedString;
+}
+
+function displayHeader(tableElement, len) {
+    const thead = tableElement.querySelector("thead");
+    thead.innerHTML = "";
+
+    //if there are filtered results, then diaplay the header
+    if (len !== 0)
+        thead.innerHTML += `
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>seatnumber</th>
+            <th>cid</th>
+            <th>paymentmethod</th>
+            <th>paymentlocation</th>
+            <th>email</th>
+            <th>seatlocation</th>
+        </tr>
+        `
+}
+
+function displayFilteredData(list) {
+    const tableElement = document.getElementById('filteredResult');
+    const tableBody = tableElement.querySelector('tbody');
+    
+    //display the header columns
+    displayHeader(tableElement, list.length);
+
+    //display the body info
+    tableBody.innerHTML = "";                   //clear the outdated rows
+    list.forEach(r => {
+        const row = tableBody.insertRow();      //create a new row
+        r.forEach((c, index) => { 
+            const cell = row.insertCell(index); //create a new cell
+            cell.textContent = c;
+        });
+    });
+
+}
+
+async function selectTPH() {
+    event.preventDefault();
+
+    const data = document.getElementById("filterList");
+    const parsedString = parseHTMtoString(data.children);
+    const response = await fetch('/selectTPH', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            parsedString: parsedString
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('selectResultMsg');
+    if (responseData.success) {
+        messageElement.textContent = "Filtered data shown below: ";
+        displayFilteredData(responseData.filteredResult);
+    } else {
+        messageElement.textContent = "Errors contained in the input data!";
+    }
+}
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -258,6 +400,8 @@ window.onload = function() {
     document.getElementById("soldFromTPH").addEventListener("submit", retrieveSoldSeatNumbers);
     document.getElementById("updataTPH1").addEventListener("submit", updateTPH1);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    document.getElementById("selectTPH").addEventListener("submit", selectTPH);
+    document.getElementById("dropdown_0").addEventListener("change", addDropdown);
 };
 
 // General function to refresh the displayed table data. 
