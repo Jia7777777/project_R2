@@ -270,9 +270,26 @@ async function countDemotable() {
     }
 }
 
-function createDropdownOptions(dropdown) {
+//parse the text segmeents we got from the HTML form to a complete string
+function parseHTMtoString(HTMLdata) {
+    let parsedString = "";
+    for (const frag of HTMLdata) {
+        if (frag.value !== "")
+            if (frag.value.includes("number")) {
+                parsedString += frag.value.split("_")[1] + " ";
+            } else if (frag.value.includes("string")) {
+                parsedString += `'${frag.value.split("_")[1]}' `;
+            } else {
+                parsedString += frag.value + " ";
+            }
+    }
+    console.log(parsedString);
+    return parsedString;
+}
+
+function createAggregateDropdownOptions(dropdown) {
     const defaultOption = document.createElement("option");
-    defaultOption.value = "default";
+    defaultOption.value = "";
     defaultOption.text = "";
     dropdown.appendChild(defaultOption);
 
@@ -287,42 +304,200 @@ function createDropdownOptions(dropdown) {
     dropdown.appendChild(optionOr);
 }
 
-async function addDropdown(currDropdown) {
+function createOperationDropdownOptionsString(dropdown) {
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.text = "";
+    dropdown.appendChild(defaultOption);
+
+    const optionEQ = document.createElement("option");
+    optionEQ.value = "string_=";
+    optionEQ.text = "equals";
+    dropdown.appendChild(optionEQ);
+
+    const optionIncludes = document.createElement("option");
+    optionIncludes.value = "string_LIKE";
+    optionIncludes.text = "include";
+    dropdown.appendChild(optionIncludes);
+}
+
+function createOperationDropdownOptionsNumber(dropdown) {
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.text = "";
+    dropdown.appendChild(defaultOption);
+
+    const optionGT = document.createElement("option");
+    optionGT.value = "number_>";
+    optionGT.text = ">";
+    dropdown.appendChild(optionGT);
+
+    const optionGTEQ = document.createElement("option");
+    optionGTEQ.value = "number_>=";
+    optionGTEQ.text = ">=";
+    dropdown.appendChild(optionGTEQ);
+
+    const optionLT = document.createElement("option");
+    optionLT.value = "number_<";
+    optionLT.text = "<";
+    dropdown.appendChild(optionLT);
+
+    const optionLTEQ = document.createElement("option");
+    optionLTEQ.value = "number_<=";
+    optionLTEQ.text = "<=";
+    dropdown.appendChild(optionLTEQ);
+    
+    const optionEQ = document.createElement("option");
+    optionEQ.value = "number_=";
+    optionEQ.text = "=";
+    dropdown.appendChild(optionEQ);
+}
+
+
+function createColumnDropdownOptions(dropdown) {
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.text = "";
+    dropdown.appendChild(defaultOption);
+
+    const sn = document.createElement("option");
+    sn.value = "seatNumber";
+    sn.text = "seatNumber";
+    dropdown.appendChild(sn);
+
+    const cid = document.createElement("option");
+    cid.value = "cid";
+    cid.text = "cid";
+    dropdown.appendChild(cid);
+
+    const pm = document.createElement("option");
+    pm.value = "paymentmethod";
+    pm.text = "paymentmethod";
+    dropdown.appendChild(pm);
+
+    const pl = document.createElement("option");
+    pl.value = "paymentlocation";
+    pl.text = "paymentlocation";
+    dropdown.appendChild(pl);
+    
+    const e = document.createElement("option");
+    e.value = "email";
+    e.text = "email";
+    dropdown.appendChild(e);
+
+    const sl = document.createElement("option");
+    sl.value = "seatlocation";
+    sl.text = "seatlocation";
+    dropdown.appendChild(sl);
+}
+
+function deleteAfterIdx(filterList, start) {
+    console.log(filterList);
+    console.log(start);
+    //delete all the dropdown and textboxes after this
+    for (let i=filterList.children.length-1; i>start; i--) {
+        //delete at this position for length-start times
+        filterList.removeChild(filterList.lastElementChild);
+    }
+}
+
+function addInputBox(filterList, index) {
+    const newInput = document.createElement("input");
+    newInput.required = true;
+    newInput.id = `input_${index}`;
+    newInput.type = "text";
+    filterList.appendChild(newInput);
+}
+
+function addOperation(filterList, index) {
+    const newDropdown = document.createElement("select");
+    newDropdown.addEventListener("change", processAggregate);
+    newDropdown.id = `aggregate_${index+1}`;
+    createAggregateDropdownOptions(newDropdown);
+    filterList.appendChild(newDropdown);
+}
+
+function addColumn(index, choice) {
+    const newDropdown = document.createElement("select");
+    newDropdown.id = `operation_${index}`;
+    newDropdown.required = true;
+    newDropdown.addEventListener("change", processOperation);
+    if (["paymentmethod", "paymentlocation", "email", "seatlocation"].includes(choice))
+        createOperationDropdownOptionsString(newDropdown);
+    else
+        createOperationDropdownOptionsNumber(newDropdown);
+    return newDropdown;
+}
+
+async function processAggregate(currDropdown) {
     const filterList = document.getElementById("filterList");
-;
-    if(currDropdown.target.value !== "default" && currDropdown.target === filterList.lastElementChild) {    //the dropdown is selected with a value
-        const id = filterList.children.length/2;
-        
-        const textbox = document.createElement("input");
-        textbox.type = "text";
-        textbox.id = `input_${id}`;
-        filterList.appendChild(textbox);
-
+    const choice = currDropdown.target.value;
+    const index = filterList.children.length;
+    if(choice !== "" && currDropdown.target === filterList.lastElementChild) {    //the dropdown is selected with a value
         const newDropdown = document.createElement("select");
-        newDropdown.id = `dropdown_${id}`;
-        newDropdown.addEventListener("change", addDropdown);
-        createDropdownOptions(newDropdown);
-
+        newDropdown.id = `column_${index}`;
+        newDropdown.required = true;
+        newDropdown.addEventListener("change", processColumn);
+        createColumnDropdownOptions(newDropdown);
         filterList.appendChild(newDropdown);
-    } else if (currDropdown.target.value === "default") {
-        //delete all the dropdown and textboxes after this
-        const start = Number((currDropdown.target.id.split("_"))[1])*2 + 1;
-
-        for (let i=filterList.children.length-1; i>start; i--) {
-            //delete at this position for length-start times
-            filterList.removeChild(filterList.lastElementChild);
-        }
+    } else if (currDropdown.target.value === "") {
+        const start = Number(currDropdown.target.id.split("_")[1]);
+        deleteAfterIdx(filterList, start);
     };
 }
 
-//parse the text segmeents we got from the HTML form to a complete string
-function parseHTMtoString(HTMLdata) {
-    let parsedString = "";
-    for (const frag of HTMLdata) {
-        if (frag.value !== "default")
-            parsedString += frag.value + " ";
+async function processOperation(currDropdown) {
+    const filterList = document.getElementById("filterList");
+    const choice = currDropdown.target.value;
+    const index = filterList.children.length;
+    if(choice !== "" && currDropdown.target === filterList.lastElementChild) {    //the dropdown is selected with a value
+        addInputBox(filterList, index);
+        addOperation(filterList, index);
+    } else if (currDropdown.target.value === "") {
+        const start = Number(currDropdown.target.id.split("_")[1]);
+        deleteAfterIdx(filterList, start);
+    };
+}
+
+async function processColumn(currDropdown) {
+    const filterList = document.getElementById("filterList");
+    const choice = currDropdown.target.value;
+    const index = filterList.children.length;
+    if(choice !== "" && currDropdown.target === filterList.lastElementChild) {    //the dropdown is selected with a value
+        const newDropdown = addColumn(index, choice);
+        filterList.appendChild(newDropdown);
+    } else if (choice !== "" && currDropdown.target !== filterList.lastElementChild) { //if you select another column with another type
+        const copiedIndex = Number(currDropdown.target.id.split("_")[1]);
+        const newDropdown = addColumn(copiedIndex, choice);
+        filterList.replaceChild(newDropdown, filterList.children[copiedIndex+1]);
+    } else if (currDropdown.target.value === "") {
+        const start = Number(currDropdown.target.id.split("_")[1]);
+        deleteAfterIdx(filterList, start);
+    };
+}
+
+async function selectTPH() {
+    event.preventDefault();
+    const data = document.getElementById("filterList");
+    const parsedString = parseHTMtoString(data.children);
+    const response = await fetch('/selectTPH', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            parsedString: parsedString
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('selectResultMsg');
+    if (responseData.success) {
+        messageElement.textContent = "Filtered data shown below: ";
+        displayFilteredData(responseData.filteredResult);
+    } else {
+        messageElement.textContent = "Errors contained in the input data!";
     }
-    return parsedString;
 }
 
 function displayHeader(tableElement, len) {
@@ -360,33 +535,8 @@ function displayFilteredData(list) {
             cell.textContent = c;
         });
     });
-
 }
 
-async function selectTPH() {
-    event.preventDefault();
-
-    const data = document.getElementById("filterList");
-    const parsedString = parseHTMtoString(data.children);
-    const response = await fetch('/selectTPH', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            parsedString: parsedString
-        })
-    });
-
-    const responseData = await response.json();
-    const messageElement = document.getElementById('selectResultMsg');
-    if (responseData.success) {
-        messageElement.textContent = "Filtered data shown below: ";
-        displayFilteredData(responseData.filteredResult);
-    } else {
-        messageElement.textContent = "Errors contained in the input data!";
-    }
-}
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -401,7 +551,7 @@ window.onload = function() {
     document.getElementById("updataTPH1").addEventListener("submit", updateTPH1);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("selectTPH").addEventListener("submit", selectTPH);
-    document.getElementById("dropdown_0").addEventListener("change", addDropdown);
+    document.getElementById("column_0").addEventListener("change", processColumn);
 };
 
 // General function to refresh the displayed table data. 

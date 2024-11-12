@@ -56,13 +56,16 @@
 
     <h2>Filter CBook Data</h2>
     <form id="selectTPH">
-        <p>When typing paymentmethod/paymentlocation/email/seatlocation, please surround the value with ''</p>
+        <p></p>
         <div id="filterList">
-            <input type="text" id="input_0">
-            <select id="dropdown_0">
-                <option value="default"></option>
-                <option value="AND">AND</option>
-                <option value="OR">OR</option>
+            <select id="column_0" required>
+                <option value=""></option>
+                <option value="seatNumber">seatNumber</option>
+                <option value="cid">cid</option>
+                <option value="paymentmethod">paymentmethod</option>
+                <option value="paymentlocation">paymentlocation</option>
+                <option value="email">email</option>
+                <option value="seatlocation">seatlocation</option>
             </select>
         </div>
         <br>
