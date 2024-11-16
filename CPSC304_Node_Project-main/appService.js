@@ -187,6 +187,25 @@ async function joinTPH1ANDConcert(title) {
     }
 }
 
+// Aggregation with GROUP BY Clause: Join TPH1 and Concert, GROUP BY concert title, SELECT concert title and number of tickets sold in that concert
+async function AggregationWithGroupBy() {
+    try {
+        return await withOracleDB(async (connection) => {
+            const query = `
+                SELECT c.title, COUNT(*)
+                FROM TPH1 t, Concert c
+                WHERE t.cid = c.cid
+                GROUP BY c.title
+            `;
+
+            const result = await connection.execute(query, [], { autoCommit: true });
+            return result.rows.map(row => ({title: row[0], count: row[1]}));
+        });
+    } catch (err) {
+        return [];
+    }
+}
+
 async function countDemotable() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
@@ -214,5 +233,6 @@ module.exports = {
     joinTPH1ANDConcert,
     countDemotable,
     deleteFromTicketPurchaseHas,
-    selectTPH
+    selectTPH,
+    AggregationWithGroupBy
 };
