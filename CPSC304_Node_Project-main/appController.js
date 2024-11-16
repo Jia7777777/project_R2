@@ -74,6 +74,16 @@ router.post("/get-unsold-seatInfo", async (req, res) => {
     }
 })
 
+// POST endpoint for aggregation with group by
+router.post("/aggregation-with-group-by", async (req, res) => {
+    const info = await appService.AggregationWithGroupBy();
+    if (info.length > 0) {
+        res.json({ success: true, info});
+    } else {
+        res.json({ success: true, info: [] });
+    }
+})
+
 router.post('/selectTPH', async (req, res) => {
     const {parsedString} = req.body;
     const filteredResult = await appService.selectTPH(parsedString);

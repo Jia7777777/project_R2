@@ -181,6 +181,7 @@ async function retrieveSoldSeatNumbers(event) {
     const responseData = await response.json();
     const messageElement = document.getElementById('soldResultMsg');
     const list = document.getElementById('listOfUnsoldTickets');
+    list.innerHTML = ''; 
 
     if (responseData.success && responseData.seatInfo) {
         messageElement.textContent = `Here are the sold ticket numbers for ${titleValue}:`;
@@ -190,6 +191,30 @@ async function retrieveSoldSeatNumbers(event) {
             list.appendChild(listItem);
         });
         fetchTableData();
+    } else {
+        messageElement.textContent = "Error retrieving data!";
+    }
+}
+
+async function retrieveTheNumberOfTicketsSoldForConcert(event) {
+    event.preventDefault();
+
+    const response = await fetch('/aggregation-with-group-by', {
+        method: 'POST'
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('retrieveResultMsg');
+    const list = document.getElementById('listOfTheNumberOfTickets');
+    list.innerHTML = ''; 
+
+    if (responseData.success && responseData.info) {
+        messageElement.textContent = `Here are the number of tickets sold for each concert:`;
+        responseData.info.forEach(({ title, count }) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `Concert: ${title}, The number of tickets sold: ${count}`;
+            list.appendChild(listItem);
+        });
     } else {
         messageElement.textContent = "Error retrieving data!";
     }
@@ -552,6 +577,7 @@ window.onload = function() {
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("selectTPH").addEventListener("submit", selectTPH);
     document.getElementById("column_0").addEventListener("change", processColumn);
+    document.getElementById("retrieveTheNumberOfTickets").addEventListener("click", retrieveTheNumberOfTicketsSoldForConcert);
 };
 
 // General function to refresh the displayed table data. 
