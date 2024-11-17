@@ -208,7 +208,7 @@ async function retrieveTheNumberOfTicketsSoldForConcert(event) {
     const list = document.getElementById('listOfTheNumberOfTickets');
     list.innerHTML = ''; 
 
-    if (responseData.success && responseData.info) {
+    if (responseData.success) {
         messageElement.textContent = `Here are the number of tickets sold for each concert:`;
         responseData.info.forEach(({ title, count }) => {
             const listItem = document.createElement('li');
@@ -216,7 +216,7 @@ async function retrieveTheNumberOfTicketsSoldForConcert(event) {
             list.appendChild(listItem);
         });
     } else {
-        messageElement.textContent = "Error retrieving data!";
+        messageElement.textContent = "There is no concert in the system!";
     }
 }
 
