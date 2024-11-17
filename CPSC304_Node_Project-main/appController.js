@@ -70,17 +70,27 @@ router.post("/get-unsold-seatInfo", async (req, res) => {
     if (seatInfo.length > 0) {
         res.json({ success: true, seatInfo});
     } else {
-        res.json({ success: true, seatInfo: [] });
+        res.json({ success: false, seatInfo: [] });
     }
 })
 
-// POST endpoint for aggregation with group by
-router.post("/aggregation-with-group-by", async (req, res) => {
+// GET endpoint for GROUP BY clause
+router.get("/aggregation-with-group-by", async (req, res) => {
     const info = await appService.AggregationWithGroupBy();
     if (info.length > 0) {
         res.json({ success: true, info});
     } else {
-        res.json({ success: true, info: [] });
+        res.json({ success: false, info: [] });
+    }
+})
+
+// GET endpoint for HAVING clause
+router.get("/retrieve-audiences-who-have-bought-tickets", async (req, res) => {
+    const info = await appService.FindNumberOfTickets();
+    if (info.length > 0) {
+        res.json({ success: true, info});
+    } else {
+        res.json({ success: false, info: [] });
     }
 })
 

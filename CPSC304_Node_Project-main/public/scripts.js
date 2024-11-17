@@ -171,7 +171,7 @@ async function retrieveSoldSeatNumbers(event) {
     const titleValue = document.getElementById('concertTitle').value;
 
     const response = await fetch('/get-unsold-seatInfo', {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -200,7 +200,7 @@ async function retrieveTheNumberOfTicketsSoldForConcert(event) {
     event.preventDefault();
 
     const response = await fetch('/aggregation-with-group-by', {
-        method: 'POST'
+        method: 'GET'
     });
 
     const responseData = await response.json();
@@ -213,6 +213,42 @@ async function retrieveTheNumberOfTicketsSoldForConcert(event) {
         responseData.info.forEach(({ title, count }) => {
             const listItem = document.createElement('li');
             listItem.textContent = `Concert: ${title}, The number of tickets sold: ${count}`;
+            list.appendChild(listItem);
+        });
+    } else {
+        messageElement.textContent = "Error retrieving data!";
+    }
+}
+
+async function retrieveAudienceWhoHaveBoughtTickets(event) {
+    event.preventDefault();
+
+    const messageElement = document.getElementById('retrieveAudienceResultMsg');
+    const list = document.getElementById('listOfAudience');
+    const button = document.getElementById('retrieveAudience');
+    list.innerHTML = ''; 
+    
+    if (messageElement.style.display === 'none') {
+        messageElement.style.display = 'block';
+        button.style.background = "red";
+        button.textContent = 'Hide';
+    } else {
+        messageElement.style.display = 'none';
+        button.textContent = 'Retrieve';
+        button.style.background = "#04AA6D";
+        list.innerHTML = '';
+        return;
+    }
+
+    const response = await fetch('retrieve-audiences-who-have-bought-tickets', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    if (responseData.success && responseData.info) {
+        responseData.info.forEach(({ email, count }) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `Email: ${email}, Number of Tickets Bought: ${count}`;
             list.appendChild(listItem);
         });
     } else {
@@ -574,10 +610,12 @@ window.onload = function() {
     document.getElementById("deleteFromTPH").addEventListener("submit", deleteFromTPH);
     document.getElementById("soldFromTPH").addEventListener("submit", retrieveSoldSeatNumbers);
     document.getElementById("updataTPH1").addEventListener("submit", updateTPH1);
-    document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("selectTPH").addEventListener("submit", selectTPH);
     document.getElementById("column_0").addEventListener("change", processColumn);
     document.getElementById("retrieveTheNumberOfTickets").addEventListener("click", retrieveTheNumberOfTicketsSoldForConcert);
+    document.getElementById("retrieveAudience").addEventListener("click", retrieveAudienceWhoHaveBoughtTickets);
+
+    
 };
 
 // General function to refresh the displayed table data. 

@@ -80,7 +80,7 @@ async function testOracleConnection() {
 
 async function fetchTPH1FromDb() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM TPH1');
+        const result = await connection.execute('SELECT * FROM TPH1 FETCH FIRST 10 ROWS ONLY');
         return result.rows;
     }).catch(() => {
         return [];
@@ -105,21 +105,7 @@ async function initiateData() {
         catch (err) {
             // should not come here    
         }
-
-        // const result = await connection.execute(`
-        //     CREATE TABLE DEMOTABLE (
-        //         id NUMBER PRIMARY KEY,
-        //         name VARCHAR2(20)
-        //     )
-        // `);
-
-        // Draft for successfully initializing SQL tables in OracleDB
-        //  await connection.execute(
-        //      `INSERT INTO DEMOTABLE (id, name) VALUES (12, 'Owen')
-        //      `,
-        //     [],
-        //     { autoCommit: true }
-        // );
+        
         return true;
     }).catch(() => {
         return false;
@@ -145,7 +131,8 @@ async function insertTPH(seatnumber, cid, paymentmethod, paymentlocation, email,
 async function updateFromTicketPurchaseHas(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `UPDATE TPH1 SET paymentmethod = :paymentmethod, paymentlocation = :paymentlocation, email = :email, seatlocation = :seatlocation where seatnumber = :seatnumber AND cid = :cid`,
+            `UPDATE TPH1 SET paymentmethod = :paymentmethod, paymentlocation = :paymentlocation, email = :email, seatlocation = :seatlocation where seatnumber = :seatnumber AND cid = :cid
+            LIMIT 5`,
             [paymentmethod, paymentlocation, email, seatlocation, seatnumber, cid],
             { autoCommit: true }
         );
@@ -187,7 +174,7 @@ async function joinTPH1ANDConcert(title) {
     }
 }
 
-// Aggregation with GROUP BY Clause: Join TPH1 and Concert, GROUP BY concert title, SELECT concert title and number of tickets sold in that concert
+// GROUP BY Clause: Join TPH1 and Concert, GROUP BY concert title, SELECT concert title and number of tickets sold in that concert
 async function AggregationWithGroupBy() {
     try {
         return await withOracleDB(async (connection) => {
@@ -200,6 +187,26 @@ async function AggregationWithGroupBy() {
 
             const result = await connection.execute(query, [], { autoCommit: true });
             return result.rows.map(row => ({title: row[0], count: row[1]}));
+        });
+    } catch (err) {
+        return [];
+    }
+}
+
+// HAVING Clause: Find the email of the audience and number of tickets they have purchased who has purchased at least 1 ticket
+async function FindNumberOfTickets() {
+    try {
+        return await withOracleDB(async (connection) => {
+            const query = `
+                SELECT a.email, COUNT(*)
+                FROM Audience a, TPH1 tph
+                WHERE a.email = tph.email
+                GROUP BY a.email
+                HAVING COUNT(*) >= 1
+            `;
+
+            const result = await connection.execute(query, [], { autoCommit: true });
+            return result.rows.map(row => ({email: row[0], count: row[1]}));
         });
     } catch (err) {
         return [];
@@ -231,8 +238,8 @@ module.exports = {
     insertTPH, 
     updateFromTicketPurchaseHas, 
     joinTPH1ANDConcert,
-    countDemotable,
     deleteFromTicketPurchaseHas,
     selectTPH,
-    AggregationWithGroupBy
+    AggregationWithGroupBy,
+    FindNumberOfTickets
 };

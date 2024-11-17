@@ -7,10 +7,14 @@
 
     <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
     <link rel="stylesheet" href="styles.css">  
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
 
     <title>Ticket Management Service</title>
 </head>
-<body>
+<body class="animate__animated animate__fadeInLeft">
     <!-- ===================================================================================== -->
     <!-- Display the current status of the database connection. 
          !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
@@ -182,15 +186,16 @@
     <br><hr><br> <!-- ========================================================================= -->
 
     <h2> Retrieve the number of tickets sold for each Concert </h2>
-    <button id="retrieveTheNumberOfTickets"> Retrieve </button> <br>
+    <button id="retrieveTheNumberOfTickets" style="background: #04AA6D;"> Retrieve </button> <br>
     <h4 id="retrieveResultMsg"></h4>
     <div id="listOfTheNumberOfTickets"></div>
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Count the Tuples in CBook</h2>
-    <button id="countDemotable"> count </button> <br><br>
-    <!-- A placeholder to display the count result. -->
-    <div id="countResultMsg"></div> <br>
+    <h2> Retrieve Audience Who Has Bought Tickets (Email, Number of Tickets) </h2>
+    <button id="retrieveAudience" style="background: #04AA6D;"> Retrieve </button> <br>
+    <h4 id="retrieveAudienceResultMsg" style="display: none;"></h4>
+    <div id="listOfAudience"></div>
+    <br><hr><br> <!-- ========================================================================= -->
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
