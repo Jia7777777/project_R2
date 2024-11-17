@@ -75,6 +75,14 @@ input, textarea {
     margin-bottom: 10px;
 }
 
+.input_checkbox {
+    width: 10%;
+    padding: none;
+    border: none;
+    margin:none;
+    box-shadow: none;
+}
+
 input::placeholder, textarea::placeholder {
     color: #aaa;
 }

@@ -111,6 +111,7 @@ router.post('/selectTPH', async (req, res) => {
 })
 
 router.get('/count-demotable', async (req, res) => {
+    const {} = req.body;
     const tableCount = await appService.countDemotable();
     if (tableCount >= 0) {
         res.json({ 
@@ -121,6 +122,22 @@ router.get('/count-demotable', async (req, res) => {
         res.status(500).json({ 
             success: false, 
             count: tableCount
+        });
+    }
+})
+
+router.get('/projectConcert', async (req, res) => {
+    const columnString = req.query.columnString;
+    const result = await appService.projectConcert(columnString);
+    if (result.length >= 0) {
+        res.json({ 
+            success: true,  
+            projectResult: result
+        });
+    } else {
+        res.status(500).json({ 
+            success: false, 
+            projectResult: []
         });
     }
 });

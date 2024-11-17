@@ -598,6 +598,77 @@ function displayFilteredData(list) {
     });
 }
 
+function displayProjectHeader(tableElement, len, columnList) {
+    const thead = tableElement.querySelector("thead");
+    thead.innerHTML = "";
+    console.log(columnList);
+    //if there are filtered results, then diaplay the header
+    //the header columns are dynamically created
+    if (len !== 0) {
+        const head = thead.insertRow();
+        columnList.forEach((c, index) => {
+            const cell = head.insertCell(index);
+            cell.textContent = c;
+        });
+    }
+}
+
+function displayProjectionData(resultList, columnList) {
+    const tableElement = document.getElementById('projectResult');
+    const tableBody = tableElement.querySelector('tbody');
+    
+    //display the header columns
+    displayProjectHeader(tableElement, resultList.length, columnList);
+
+    //display the body info
+    tableBody.innerHTML = "";                   //clear the outdated rows
+    resultList.forEach(r => {
+        const row = tableBody.insertRow();      //create a new row
+        r.forEach((c, index) => { 
+            const cell = row.insertCell(index); //create a new cell
+            cell.textContent = c;
+        });
+    });
+}
+
+async function projectConcert() {
+    event.preventDefault();
+    const messageElement = document.getElementById('projectMessage');
+    const rawData = document.getElementById("projectionConcert").querySelectorAll('input:checked');
+    
+    //force the user to choose at least 1 column
+    if (rawData.length === 0) {
+        messageElement.textContent = "You must choose at least 1 column to see results.";
+        displayProjectionData([], []);
+        return;
+    }
+
+    //parse the checkbox results into a string
+    let columnString = "";
+    const columnList = []
+    for (let i=0; i<rawData.length; i++) {
+        columnString += rawData[i].value;
+        columnList.push(rawData[i].value);
+        if (i !== rawData.length - 1)
+            columnString += ", "
+    }
+
+    //GET cannot use a body so I pass the string as a parameter
+    const response = await fetch(`/projectConcert?columnString=${encodeURIComponent(columnString)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const responseData = await response.json();
+    if (responseData.success) {
+        messageElement.textContent = "Here is your customized result: ";
+        displayProjectionData(responseData.projectResult, columnList);
+    } else {
+        messageElement.textContent = "Errors occured";
+    }
+}
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -614,7 +685,7 @@ window.onload = function() {
     document.getElementById("column_0").addEventListener("change", processColumn);
     document.getElementById("retrieveTheNumberOfTickets").addEventListener("click", retrieveTheNumberOfTicketsSoldForConcert);
     document.getElementById("retrieveAudience").addEventListener("click", retrieveAudienceWhoHaveBoughtTickets);
-
+    document.getElementById("projectionConcert").addEventListener("submit", projectConcert);
     
 };
 

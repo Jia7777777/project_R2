@@ -230,6 +230,15 @@ async function selectTPH(parsedString) {
     });
 }
 
+async function projectConcert(s) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`SELECT ${s} FROM Concert`);
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchTPH1FromDb,
@@ -240,5 +249,6 @@ module.exports = {
     deleteFromTicketPurchaseHas,
     selectTPH,
     AggregationWithGroupBy,
-    FindNumberOfTickets
+    FindNumberOfTickets,
+    projectConcert
 };
