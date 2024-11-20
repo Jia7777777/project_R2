@@ -221,11 +221,34 @@ async function retrieveTheNumberOfTicketsSoldForConcert(event) {
 
     if (responseData.success) {
         messageElement.textContent = `Here are the number of tickets sold for each concert:`;
-        responseData.info.forEach(({ title, count }) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Concert: ${title}, The number of tickets sold: ${count}`;
-            list.appendChild(listItem);
+
+        const table = document.createElement('table');
+
+        const headers = ['Concert Title', 'Number of Tickets Sold'];
+        const headerRow = document.createElement('tr');
+        headers.forEach(headerText => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = headerText;
+            headerRow.appendChild(headerCell);
         });
+
+        table.appendChild(headerRow);
+
+        responseData.info.forEach(({ title, count }) => {
+            const row = document.createElement('tr');
+
+            const titleCell = document.createElement('td');
+            titleCell.textContent = title;
+
+            const countCell = document.createElement('td');
+            countCell.textContent = count;
+
+            row.appendChild(titleCell);
+            row.appendChild(countCell);
+            table.appendChild(row);
+        });
+
+        list.appendChild(table);
     } else {
         messageElement.textContent = "There is no concert in the system!";
     }
