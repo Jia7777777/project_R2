@@ -228,17 +228,10 @@ async function retrieveAudienceWhoHaveBoughtTickets(event) {
     const button = document.getElementById('retrieveAudience');
     list.innerHTML = ''; 
     
-    if (messageElement.style.display === 'none') {
-        messageElement.style.display = 'block';
-        button.style.background = "red";
-        button.textContent = 'Hide';
-    } else {
-        messageElement.style.display = 'none';
-        button.textContent = 'Retrieve';
-        button.style.background = "#04AA6D";
-        list.innerHTML = '';
+    if (hideButton(button, list, messageElement) == 1) {
         return;
     }
+    
 
     const response = await fetch('retrieve-audiences-who-have-bought-tickets', {
         method: 'GET'
@@ -693,4 +686,19 @@ window.onload = function() {
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
     fetchAndDisplayUsers();
+}
+
+function hideButton(button, list, messageElement) {
+    if (messageElement.style.display === 'none') {
+        messageElement.style.display = 'block';
+        button.style.background = "red";
+        button.textContent = 'Hide';
+        return 0;
+    } else {
+        messageElement.style.display = 'none';
+        button.textContent = 'Retrieve';
+        button.style.background = "#04AA6D";
+        list.innerHTML = '';
+        return 1;
+    }
 }
