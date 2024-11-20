@@ -209,6 +209,20 @@
     <div id="listOfAudienceJoined"></div>
     <br><hr><br> <!-- ========================================================================= -->
 
+    <h2> DIY your the columns to be displayed on Concert table </h2>
+    <form id="projectionConcert">
+        <input class="input_checkbox" type="checkbox" value="cid"> cid <br>
+        <input class="input_checkbox" type="checkbox" value="starttime"> start date <br>
+        <input class="input_checkbox" type="checkbox" value="endtime"> end date <br>
+        <input class="input_checkbox" type="checkbox" value="title"> concert title <br>
+
+        <button type="submit" style="margin-bottom: 1rem; background-color: #04AA6D;"> Customize </button> <br>
+    </form>
+    <div id="projectMessage"></div>
+    <table id="projectResult">
+        <thead></thead>
+        <tbody></tbody>
+    </table>
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
     <script src="scripts.js"></script>

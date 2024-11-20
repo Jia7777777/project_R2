@@ -131,8 +131,7 @@ async function insertTPH(seatnumber, cid, paymentmethod, paymentlocation, email,
 async function updateFromTicketPurchaseHas(seatnumber, cid, paymentmethod, paymentlocation, email, seatlocation) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `UPDATE TPH1 SET paymentmethod = :paymentmethod, paymentlocation = :paymentlocation, email = :email, seatlocation = :seatlocation where seatnumber = :seatnumber AND cid = :cid
-            LIMIT 5`,
+            `UPDATE TPH1 SET paymentmethod = :paymentmethod, paymentlocation = :paymentlocation, email = :email, seatlocation = :seatlocation where seatnumber = :seatnumber AND cid = :cid`,
             [paymentmethod, paymentlocation, email, seatlocation, seatnumber, cid],
             { autoCommit: true }
         );
@@ -231,6 +230,15 @@ async function selectTPH(parsedString) {
     });
 }
 
+async function projectConcert(s) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`SELECT ${s} FROM Concert`);
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchTPH1FromDb,
@@ -241,5 +249,6 @@ module.exports = {
     deleteFromTicketPurchaseHas,
     selectTPH,
     AggregationWithGroupBy,
-    FindNumberOfTickets
+    FindNumberOfTickets,
+    projectConcert
 };
