@@ -168,20 +168,25 @@ async function deleteFromTPH(event) {
 
 async function retrieveSoldSeatNumbers(event) {
     event.preventDefault();
-    const titleValue = document.getElementById('concertTitle').value;
 
-    const response = await fetch('/get-unsold-seatInfo', {
+    const titleValue = document.getElementById('concertTitle').value;
+    const messageElement = document.getElementById('soldResultMsg');
+    const list = document.getElementById('listOfUnsoldTickets');
+    const button = document.getElementById('soldTickets');
+    list.innerHTML = ''; 
+
+    if (hideButton(button, list, messageElement) == 1) {
+        return;
+    }
+
+    const response = await fetch(`/get-unsold-seatInfo?title=${encodeURIComponent(titleValue)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ title: titleValue })
+        }
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('soldResultMsg');
-    const list = document.getElementById('listOfUnsoldTickets');
-    list.innerHTML = ''; 
 
     if (responseData.success && responseData.seatInfo) {
         messageElement.textContent = `Here are the sold ticket numbers for ${titleValue}:`;
@@ -199,14 +204,20 @@ async function retrieveSoldSeatNumbers(event) {
 async function retrieveTheNumberOfTicketsSoldForConcert(event) {
     event.preventDefault();
 
+    const messageElement = document.getElementById('retrieveResultMsg');
+    const list = document.getElementById('listOfTheNumberOfTickets');
+    const button = document.getElementById('retrieveTheNumberOfTickets');
+    list.innerHTML = ''; 
+
+    if (hideButton(button, list, messageElement) == 1) {
+        return;
+    }
+
     const response = await fetch('/aggregation-with-group-by', {
         method: 'GET'
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('retrieveResultMsg');
-    const list = document.getElementById('listOfTheNumberOfTickets');
-    list.innerHTML = ''; 
 
     if (responseData.success) {
         messageElement.textContent = `Here are the number of tickets sold for each concert:`;
