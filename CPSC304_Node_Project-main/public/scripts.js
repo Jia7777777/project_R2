@@ -223,6 +223,7 @@ async function retrieveTheNumberOfTicketsSoldForConcert(event) {
         messageElement.textContent = `Here are the number of tickets sold for each concert:`;
 
         const table = document.createElement('table');
+        table.style.border = '1px solid black';
 
         const headers = ['Concert Title', 'Number of Tickets Sold'];
         const headerRow = document.createElement('tr');
@@ -230,6 +231,7 @@ async function retrieveTheNumberOfTicketsSoldForConcert(event) {
             const headerCell = document.createElement('th');
             headerCell.textContent = headerText;
             headerRow.appendChild(headerCell);
+            headerCell.style.borderRight = '1px solid black';
         });
 
         table.appendChild(headerRow);
@@ -239,9 +241,11 @@ async function retrieveTheNumberOfTicketsSoldForConcert(event) {
 
             const titleCell = document.createElement('td');
             titleCell.textContent = title;
+            titleCell.style.borderRight = '1px solid black';
 
             const countCell = document.createElement('td');
             countCell.textContent = count;
+            countCell.style.borderRight = '1px solid black';
 
             row.appendChild(titleCell);
             row.appendChild(countCell);
