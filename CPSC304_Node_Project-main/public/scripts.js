@@ -190,12 +190,38 @@ async function retrieveSoldSeatNumbers(event) {
 
     if (responseData.success && responseData.seatInfo) {
         messageElement.textContent = `Here are the sold ticket numbers for ${titleValue}:`;
-        responseData.seatInfo.forEach(({ seatnumber, seatlocation }) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Seat Number: ${seatnumber}, Location: ${seatlocation}`;
-            list.appendChild(listItem);
+
+        const table = document.createElement('table');
+        table.style.border = '1px solid black';
+
+        const headers = ['Seat Number', 'Location'];
+        const headerRow = document.createElement('tr');
+        headers.forEach(headerText => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = headerText;
+            headerRow.appendChild(headerCell);
+            headerCell.style.borderRight = '1px solid black';
         });
-        fetchTableData();
+
+        table.appendChild(headerRow);
+
+        responseData.seatInfo.forEach(({ seatnumber, seatlocation }) => {
+            const row = document.createElement('tr');
+
+            const seatNumberCell = document.createElement('td');
+            seatNumberCell.textContent = seatnumber;
+            seatNumberCell.style.borderRight = '1px solid black';
+
+            const seatLocationCell = document.createElement('td');
+            seatLocationCell.textContent = seatlocation;
+            seatLocationCell.style.borderRight = '1px solid black';
+
+            row.appendChild(seatNumberCell);
+            row.appendChild(seatLocationCell);
+            table.appendChild(row);
+        });
+
+        list.appendChild(table);
     } else {
         messageElement.textContent = "Error retrieving data!";
     }
@@ -277,11 +303,37 @@ async function retrieveAudienceWhoHaveBoughtTickets(event) {
 
     const responseData = await response.json();
     if (responseData.success && responseData.info) {
-        responseData.info.forEach(({ email, count }) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Email: ${email}, Number of Tickets Bought: ${count}`;
-            list.appendChild(listItem);
+        const table = document.createElement('table');
+        table.style.border = '1px solid black';
+
+        const headers = ['Email', 'Number of Tickets Bought'];
+        const headerRow = document.createElement('tr');
+        headers.forEach(headerText => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = headerText;
+            headerRow.appendChild(headerCell);
+            headerCell.style.borderRight = '1px solid black';
         });
+
+        table.appendChild(headerRow);
+
+        responseData.info.forEach(({ email, count }) => {
+            const row = document.createElement('tr');
+
+            const emailCell = document.createElement('td');
+            emailCell.textContent = email;
+            emailCell.style.borderRight = '1px solid black';
+
+            const countCell = document.createElement('td');
+            countCell.textContent = count;
+            countCell.style.borderRight = '1px solid black';
+
+            row.appendChild(emailCell);
+            row.appendChild(countCell);
+            table.appendChild(row);
+        });
+
+        list.appendChild(table);
     } else {
         messageElement.textContent = "Error retrieving data!";
     }
