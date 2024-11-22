@@ -637,6 +637,26 @@ INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlo
 INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0003, 0981, 'Middle Bowl', '3073317310@outlook.com', 'Debit', 'Offline');
 INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0003, 0353, 'Courtside', '8636546121@icloud.com', 'Debit', 'Online');
 INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0003, 0883, 'Suite', '5662980350@qq.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0001, 0883, 'Suite', '5662980350@qq.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0002, 0883, 'Suite', '5662980350@qq.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0004, 0883, 'Suite', '5662980350@qq.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0005, 0883, 'Suite', '5662980350@qq.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0001, 0981, 'Middle Bowl', '3073317310@outlook.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0002, 0981, 'Middle Bowl', '3073317310@outlook.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0004, 0981, 'Middle Bowl', '3073317310@outlook.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0005, 0981, 'Middle Bowl', '3073317310@outlook.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0001, 0735, 'Lower Bowl', '0337175631@gmail.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0002, 0735, 'Lower Bowl', '0337175631@gmail.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0003, 0736, 'Lower Bowl', '0337175631@gmail.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0005, 0735, 'Lower Bowl', '0337175631@gmail.com', 'Debit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0001, 0382, 'Lower Bowl', '7521045395@qq.com', 'Debit', 'Online');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0002, 0382, 'Lower Bowl', '7521045395@qq.com', 'Debit', 'Online');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0003, 0382, 'Lower Bowl', '7521045395@qq.com', 'Debit', 'Online');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0005, 0382, 'Lower Bowl', '7521045395@qq.com', 'Debit', 'Online');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0002, 0999, 'Courtside', 'zcc2280411284@gmail.com', 'Credit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0003, 0999, 'Courtside', 'zcc2280411284@gmail.com', 'Credit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0004, 0999, 'Courtside', 'zcc2280411284@gmail.com', 'Credit', 'Offline');
+INSERT INTO TPH1 (cid, seatnumber, seatlocation, email, paymentmethod, paymentlocation) VALUES (0005, 0999, 'Courtside', 'zcc2280411284@gmail.com', 'Credit', 'Offline');
 
 
 INSERT INTO L3(postalcode, province) VALUES ('V6T 1Z3', 'BC');
