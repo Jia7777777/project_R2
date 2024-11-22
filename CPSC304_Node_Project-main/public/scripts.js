@@ -189,7 +189,7 @@ async function retrieveSoldSeatNumbers(event) {
     const responseData = await response.json();
 
     if (responseData.success && responseData.seatInfo) {
-        messageElement.textContent = `Here are the sold ticket numbers for ${titleValue}:`;
+        messageElement.textContent = `Here are the tickets sold for ${titleValue}:`;
 
         const table = document.createElement('table');
         table.style.border = '1px solid black';
@@ -246,7 +246,7 @@ async function retrieveTheNumberOfTicketsSoldForConcert(event) {
     const responseData = await response.json();
 
     if (responseData.success) {
-        messageElement.textContent = `Here are the number of tickets sold for each concert:`;
+        messageElement.textContent = `Here is the number of tickets sold for each concert:`;
 
         const table = document.createElement('table');
         table.style.border = '1px solid black';
@@ -303,6 +303,8 @@ async function retrieveAudienceWhoHaveBoughtTickets(event) {
 
     const responseData = await response.json();
     if (responseData.success && responseData.info) {
+        messageElement.textContent = `Here are the audience who have bought tickets:`;
+
         const table = document.createElement('table');
         table.style.border = '1px solid black';
 
@@ -336,6 +338,63 @@ async function retrieveAudienceWhoHaveBoughtTickets(event) {
         list.appendChild(table);
     } else {
         messageElement.textContent = "Error retrieving data!";
+    }
+}
+
+async function retrieveAudienceWhoHaveGoToEveryConcert(event) {
+    event.preventDefault();
+
+    const messageElement = document.getElementById('joinResultMsg');
+    const list = document.getElementById('listOfAudienceJoined');
+    const button = document.getElementById('join');
+    list.innerHTML = ''; 
+    
+    if (hideButton(button, list, messageElement) == 1) {
+        return;
+    }
+    
+
+    const response = await fetch('retrive-audience-who-have-go-to-every-concert', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    if (responseData.success) {
+        messageElement.textContent = `Here are the audience who attend every concerts:`;
+
+        const table = document.createElement('table');
+        table.style.border = '1px solid black';
+
+        const headers = ['Email', 'Number of Tickets Bought'];
+        const headerRow = document.createElement('tr');
+        headers.forEach(headerText => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = headerText;
+            headerRow.appendChild(headerCell);
+            headerCell.style.borderRight = '1px solid black';
+        });
+
+        table.appendChild(headerRow);
+
+        responseData.info.forEach(({ email, name }) => {
+            const row = document.createElement('tr');
+
+            const emailCell = document.createElement('td');
+            emailCell.textContent = email;
+            emailCell.style.borderRight = '1px solid black';
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = name;
+            nameCell.style.borderRight = '1px solid black';
+
+            row.appendChild(emailCell);
+            row.appendChild(nameCell);
+            table.appendChild(row);
+        });
+
+        list.appendChild(table);
+    } else {
+        messageElement.textContent = "No audience attends every concerts!";
     }
 }
 
@@ -769,6 +828,7 @@ window.onload = function() {
     document.getElementById("retrieveTheNumberOfTickets").addEventListener("click", retrieveTheNumberOfTicketsSoldForConcert);
     document.getElementById("retrieveAudience").addEventListener("click", retrieveAudienceWhoHaveBoughtTickets);
     document.getElementById("projectionConcert").addEventListener("submit", projectConcert);
+    document.getElementById("join").addEventListener("click", retrieveAudienceWhoHaveGoToEveryConcert)
     
 };
 

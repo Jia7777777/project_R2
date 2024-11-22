@@ -94,6 +94,16 @@ router.get("/retrieve-audiences-who-have-bought-tickets", async (req, res) => {
     }
 })
 
+// GET endpoint for Divison clause
+router.get("/retrive-audience-who-have-go-to-every-concert", async (req, res) => {
+    const info = await appService.Division();
+    if (info.length > 0) {
+        res.json({ success: true, info});
+    } else {
+        res.json({ success: false, info: [] });
+    }
+})
+
 router.post('/selectTPH', async (req, res) => {
     const {parsedString} = req.body;
     const filteredResult = await appService.selectTPH(parsedString);
