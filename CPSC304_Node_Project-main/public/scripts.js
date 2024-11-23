@@ -169,23 +169,8 @@ async function deleteFromTPH(event) {
 async function retrieveSoldSeatNumbers(event) {
     event.preventDefault();
 
-<<<<<<< HEAD
     const response = await fetch('/get-unsold-seatInfo', {
         method: 'POST',
-=======
-    const titleValue = document.getElementById('concertTitle').value;
-    const messageElement = document.getElementById('soldResultMsg');
-    const list = document.getElementById('listOfUnsoldTickets');
-    const button = document.getElementById('soldTickets');
-    list.innerHTML = ''; 
-
-    if (hideButton(button, list, messageElement) == 1) {
-        return;
-    }
-
-    const response = await fetch(`/get-unsold-seatInfo?title=${encodeURIComponent(titleValue)}`, {
-        method: 'GET',
->>>>>>> 665c28d09b71bf25779e13647866eb60f48b6de1
         headers: {
             'Content-Type': 'application/json'
         }
