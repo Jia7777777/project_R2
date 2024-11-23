@@ -171,7 +171,7 @@ async function retrieveSoldSeatNumbers(event) {
     const titleValue = document.getElementById('concertTitle').value;
 
     const response = await fetch('/get-unsold-seatInfo', {
-        method: 'GET',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -697,7 +697,7 @@ function hideButton(button, list, messageElement) {
     } else {
         messageElement.style.display = 'none';
         button.textContent = 'Retrieve';
-        button.style.background = "#04AA6D";
+        button.style.background = "#3304aa";
         list.innerHTML = '';
         return 1;
     }
