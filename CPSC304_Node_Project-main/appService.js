@@ -212,6 +212,24 @@ async function FindNumberOfTickets() {
     }
 }
 
+// Division Clause: find audience (email + name) that purchase tickets for every concert
+async function Division() {
+    try {
+        return await withOracleDB(async (connection) => {
+            const query = `
+                SELECT a.email, a.audiencename
+                FROM Audience a
+                WHERE NOT EXISTS ((SELECT c.cid FROM Concert c) MINUS (SELECT t.cid FROM TPH1 t WHERE a.email = t.email))
+            `;
+
+            const result = await connection.execute(query, [], { autoCommit: true });
+            return result.rows.map(row => ({email: row[0], name: row[1]}));
+        });
+    } catch (err) {
+        return [];
+    }
+}
+
 async function countDemotable() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
@@ -250,5 +268,6 @@ module.exports = {
     selectTPH,
     AggregationWithGroupBy,
     FindNumberOfTickets,
-    projectConcert
+    projectConcert,
+    Division
 };

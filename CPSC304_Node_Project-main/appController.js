@@ -63,9 +63,9 @@ router.post("/delete-tickets", async (req, res) => {
     }
 });
 
-// POST endpoint for joining concert and TPH1
-router.post("/get-unsold-seatInfo", async (req, res) => {
-    const { title } = req.body;
+// GET endpoint for joining concert and TPH1
+router.get("/get-unsold-seatInfo", async (req, res) => {
+    const title = req.query.title;
     const seatInfo = await appService.joinTPH1ANDConcert(title);
     if (seatInfo.length > 0) {
         res.json({ success: true, seatInfo});
@@ -87,6 +87,16 @@ router.get("/aggregation-with-group-by", async (req, res) => {
 // GET endpoint for HAVING clause
 router.get("/retrieve-audiences-who-have-bought-tickets", async (req, res) => {
     const info = await appService.FindNumberOfTickets();
+    if (info.length > 0) {
+        res.json({ success: true, info});
+    } else {
+        res.json({ success: false, info: [] });
+    }
+})
+
+// GET endpoint for Divison clause
+router.get("/retrive-audience-who-have-go-to-every-concert", async (req, res) => {
+    const info = await appService.Division();
     if (info.length > 0) {
         res.json({ success: true, info});
     } else {

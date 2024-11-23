@@ -168,29 +168,65 @@ async function deleteFromTPH(event) {
 
 async function retrieveSoldSeatNumbers(event) {
     event.preventDefault();
-    const titleValue = document.getElementById('concertTitle').value;
 
+<<<<<<< HEAD
     const response = await fetch('/get-unsold-seatInfo', {
         method: 'POST',
+=======
+    const titleValue = document.getElementById('concertTitle').value;
+    const messageElement = document.getElementById('soldResultMsg');
+    const list = document.getElementById('listOfUnsoldTickets');
+    const button = document.getElementById('soldTickets');
+    list.innerHTML = ''; 
+
+    if (hideButton(button, list, messageElement) == 1) {
+        return;
+    }
+
+    const response = await fetch(`/get-unsold-seatInfo?title=${encodeURIComponent(titleValue)}`, {
+        method: 'GET',
+>>>>>>> 665c28d09b71bf25779e13647866eb60f48b6de1
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ title: titleValue })
+        }
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('soldResultMsg');
-    const list = document.getElementById('listOfUnsoldTickets');
-    list.innerHTML = ''; 
 
     if (responseData.success && responseData.seatInfo) {
-        messageElement.textContent = `Here are the sold ticket numbers for ${titleValue}:`;
-        responseData.seatInfo.forEach(({ seatnumber, seatlocation }) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Seat Number: ${seatnumber}, Location: ${seatlocation}`;
-            list.appendChild(listItem);
+        messageElement.textContent = `Here are the tickets sold for ${titleValue}:`;
+
+        const table = document.createElement('table');
+        table.style.border = '1px solid black';
+
+        const headers = ['Seat Number', 'Location'];
+        const headerRow = document.createElement('tr');
+        headers.forEach(headerText => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = headerText;
+            headerRow.appendChild(headerCell);
+            headerCell.style.borderRight = '1px solid black';
         });
-        fetchTableData();
+
+        table.appendChild(headerRow);
+
+        responseData.seatInfo.forEach(({ seatnumber, seatlocation }) => {
+            const row = document.createElement('tr');
+
+            const seatNumberCell = document.createElement('td');
+            seatNumberCell.textContent = seatnumber;
+            seatNumberCell.style.borderRight = '1px solid black';
+
+            const seatLocationCell = document.createElement('td');
+            seatLocationCell.textContent = seatlocation;
+            seatLocationCell.style.borderRight = '1px solid black';
+
+            row.appendChild(seatNumberCell);
+            row.appendChild(seatLocationCell);
+            table.appendChild(row);
+        });
+
+        list.appendChild(table);
     } else {
         messageElement.textContent = "Error retrieving data!";
     }
@@ -199,22 +235,55 @@ async function retrieveSoldSeatNumbers(event) {
 async function retrieveTheNumberOfTicketsSoldForConcert(event) {
     event.preventDefault();
 
+    const messageElement = document.getElementById('retrieveResultMsg');
+    const list = document.getElementById('listOfTheNumberOfTickets');
+    const button = document.getElementById('retrieveTheNumberOfTickets');
+    list.innerHTML = ''; 
+
+    if (hideButton(button, list, messageElement) == 1) {
+        return;
+    }
+
     const response = await fetch('/aggregation-with-group-by', {
         method: 'GET'
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('retrieveResultMsg');
-    const list = document.getElementById('listOfTheNumberOfTickets');
-    list.innerHTML = ''; 
 
     if (responseData.success) {
-        messageElement.textContent = `Here are the number of tickets sold for each concert:`;
-        responseData.info.forEach(({ title, count }) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Concert: ${title}, The number of tickets sold: ${count}`;
-            list.appendChild(listItem);
+        messageElement.textContent = `Here is the number of tickets sold for each concert:`;
+
+        const table = document.createElement('table');
+        table.style.border = '1px solid black';
+
+        const headers = ['Concert Title', 'Number of Tickets Sold'];
+        const headerRow = document.createElement('tr');
+        headers.forEach(headerText => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = headerText;
+            headerRow.appendChild(headerCell);
+            headerCell.style.borderRight = '1px solid black';
         });
+
+        table.appendChild(headerRow);
+
+        responseData.info.forEach(({ title, count }) => {
+            const row = document.createElement('tr');
+
+            const titleCell = document.createElement('td');
+            titleCell.textContent = title;
+            titleCell.style.borderRight = '1px solid black';
+
+            const countCell = document.createElement('td');
+            countCell.textContent = count;
+            countCell.style.borderRight = '1px solid black';
+
+            row.appendChild(titleCell);
+            row.appendChild(countCell);
+            table.appendChild(row);
+        });
+
+        list.appendChild(table);
     } else {
         messageElement.textContent = "There is no concert in the system!";
     }
@@ -239,13 +308,98 @@ async function retrieveAudienceWhoHaveBoughtTickets(event) {
 
     const responseData = await response.json();
     if (responseData.success && responseData.info) {
-        responseData.info.forEach(({ email, count }) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Email: ${email}, Number of Tickets Bought: ${count}`;
-            list.appendChild(listItem);
+        messageElement.textContent = `Here are the audience who have bought tickets:`;
+
+        const table = document.createElement('table');
+        table.style.border = '1px solid black';
+
+        const headers = ['Email', 'Number of Tickets Bought'];
+        const headerRow = document.createElement('tr');
+        headers.forEach(headerText => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = headerText;
+            headerRow.appendChild(headerCell);
+            headerCell.style.borderRight = '1px solid black';
         });
+
+        table.appendChild(headerRow);
+
+        responseData.info.forEach(({ email, count }) => {
+            const row = document.createElement('tr');
+
+            const emailCell = document.createElement('td');
+            emailCell.textContent = email;
+            emailCell.style.borderRight = '1px solid black';
+
+            const countCell = document.createElement('td');
+            countCell.textContent = count;
+            countCell.style.borderRight = '1px solid black';
+
+            row.appendChild(emailCell);
+            row.appendChild(countCell);
+            table.appendChild(row);
+        });
+
+        list.appendChild(table);
     } else {
         messageElement.textContent = "Error retrieving data!";
+    }
+}
+
+async function retrieveAudienceWhoHaveGoToEveryConcert(event) {
+    event.preventDefault();
+
+    const messageElement = document.getElementById('joinResultMsg');
+    const list = document.getElementById('listOfAudienceJoined');
+    const button = document.getElementById('join');
+    list.innerHTML = ''; 
+    
+    if (hideButton(button, list, messageElement) == 1) {
+        return;
+    }
+    
+
+    const response = await fetch('retrive-audience-who-have-go-to-every-concert', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    if (responseData.success) {
+        messageElement.textContent = `Here are the audience who attend every concerts:`;
+
+        const table = document.createElement('table');
+        table.style.border = '1px solid black';
+
+        const headers = ['Email', 'Number of Tickets Bought'];
+        const headerRow = document.createElement('tr');
+        headers.forEach(headerText => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = headerText;
+            headerRow.appendChild(headerCell);
+            headerCell.style.borderRight = '1px solid black';
+        });
+
+        table.appendChild(headerRow);
+
+        responseData.info.forEach(({ email, name }) => {
+            const row = document.createElement('tr');
+
+            const emailCell = document.createElement('td');
+            emailCell.textContent = email;
+            emailCell.style.borderRight = '1px solid black';
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = name;
+            nameCell.style.borderRight = '1px solid black';
+
+            row.appendChild(emailCell);
+            row.appendChild(nameCell);
+            table.appendChild(row);
+        });
+
+        list.appendChild(table);
+    } else {
+        messageElement.textContent = "No audience attends every concerts!";
     }
 }
 
@@ -679,6 +833,7 @@ window.onload = function() {
     document.getElementById("retrieveTheNumberOfTickets").addEventListener("click", retrieveTheNumberOfTicketsSoldForConcert);
     document.getElementById("retrieveAudience").addEventListener("click", retrieveAudienceWhoHaveBoughtTickets);
     document.getElementById("projectionConcert").addEventListener("submit", projectConcert);
+    document.getElementById("join").addEventListener("click", retrieveAudienceWhoHaveGoToEveryConcert)
     
 };
 
