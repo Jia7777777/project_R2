@@ -176,10 +176,11 @@
     <br><hr><br> <!-- ========================================================================= -->
 
     <!-- Retrieve Logic -->
-    <h1 style="text-align: center; font-family: serif;">Admin Area</h1>
+    
     <div class="flexRetrieve">
-        <div class="flexContent">
-            <h2> Retrieve Sold Tickets </h2>
+        <h1 class="adminPanel">Advanced</h1>
+        <div class="flexContent" style="margin-top: 2rem;">
+            <h3> Retrieve Sold Tickets </h3>
             <form id="soldFromTPH">
                 Concert Title: <input style="max-width: fit-content;" type="text" id="concertTitle" placeholder="Enter concert title" required> <br><br>
                 <button type="submit" class="retrieveButton"> Retrieve </button> <br>
@@ -187,36 +188,36 @@
             <h4 id="soldResultMsg"></h4>
             <div id="listOfUnsoldTickets"></div>
         </div>
-        <div class="flexContent">
-            <h2> Retrieve the number of tickets sold for each Concert </h2>
+        <div class="flexContent" style="margin-top: 2rem;">
+            <h3> Retrieve number of tickets sold per Concert </h3>
             <button id="retrieveTheNumberOfTickets" class="retrieveButton"> Retrieve </button> <br>
             <h4 id="retrieveResultMsg"></h4>
             <div id="listOfTheNumberOfTickets"></div>
         </div>
 
         <div class="flexContent">
-            <h2> Retrieve Audience Who Has Bought Tickets </h2>
+            <h3> Retrieve Audience Who Has Bought Tickets </h3>
             <button id="retrieveAudience" class="retrieveButton"> Retrieve </button> <br>
             <h4 id="retrieveAudienceResultMsg" style="display: none;"></h4>
             <div id="listOfAudience"></div>
         </div>
 
         <div class="flexContent">
-            <h2> Filtering Average Price </h2>
+            <h3> Filtering Average Price </h3>
             <button id="filterAverage" class="retrieveButton"> Retrieve </button> <br>
             <h4 id="filterAverageResultMsg"></h4>
             <div id="listOfFilteredAverage"></div>
         </div>
 
         <div class="flexContent">
-            <h2> Find Audience Purchased Tickets For All Concerts</h2>
+            <h3> Find Audience Purchased Tickets For All Concerts</h3>
             <button id="join" class="retrieveButton"> Retrieve </button> <br>
             <h4 id="joinResultMsg"></h4>
             <div id="listOfAudienceJoined"></div>
         </div>
 
         <div class="flexContent">
-            <h2> DIY Columns to be displayed on Concert table </h2>
+            <h3> DIY Columns to be displayed on Concert table </h3>
             <form id="projectionConcert" class="DIYForm">
                 <input class="input_checkbox" type="checkbox" value="cid"> cid <br>
                 <input class="input_checkbox" type="checkbox" value="starttime"> start date <br>
