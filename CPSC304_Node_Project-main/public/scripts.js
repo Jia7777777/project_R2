@@ -170,6 +170,15 @@ async function retrieveSoldSeatNumbers(event) {
     event.preventDefault();
     const titleValue = document.getElementById('concertTitle').value;
 
+    const messageElement = document.getElementById('soldResultMsg');
+    const list = document.getElementById('listOfUnsoldTickets');
+    const button = document.getElementById('soldTickets');
+    list.innerHTML = ''; 
+
+    if (hideButton(button, list, messageElement) == 1) {
+        return;
+    }
+
     const response = await fetch('/get-unsold-seatInfo', {
         method: 'POST',
         headers: {
@@ -177,13 +186,8 @@ async function retrieveSoldSeatNumbers(event) {
         },
         body: JSON.stringify({ title: titleValue })
     });
-
     const responseData = await response.json();
-    const messageElement = document.getElementById('soldResultMsg');
-    const list = document.getElementById('listOfUnsoldTickets');
-    list.innerHTML = ''; 
-
-
+    
     if (responseData.success && responseData.seatInfo) {
         messageElement.textContent = `Here are the tickets sold for ${titleValue}:`;
         const table = document.createElement('table');
@@ -275,6 +279,7 @@ async function retrieveTheNumberOfTicketsSoldForConcert(event) {
         });
 
         list.appendChild(table);
+        list.style.display = "block";
     } else {
         messageElement.textContent = "There is no concert in the system!";
     }
@@ -390,6 +395,7 @@ async function retrieveAudienceWhoHaveGoToEveryConcert(event) {
         });
 
         list.appendChild(table);
+        list.style.display = "block";
     } else {
         messageElement.textContent = "No audience attends every concerts!";
     }
