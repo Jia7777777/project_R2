@@ -713,7 +713,6 @@ function displayHeader(tableElement, len) {
     //if there are filtered results, then diaplay the header
     if (len !== 0)
         thead.innerHTML += `
-        <div style="height: 400px; overflow-y: auto;">
             <tr>
                 <!--Table head, need to be adjusted accordingly to align with your own.-->
                 <th>seatnumber</th>
@@ -723,7 +722,6 @@ function displayHeader(tableElement, len) {
                 <th>email</th>
                 <th>seatlocation</th>
             </tr>
-        </div>
         `
 }
 
@@ -745,6 +743,7 @@ function displayAvgHeader(tableElement, len) {
 function displayFilteredData(list, id) {
     const tableElement = document.getElementById(id);
     const tableBody = tableElement.querySelector('tbody');
+    const filteredDiv = document.getElementById("filteredDiv");
     
     //display the header columns
     if (id === 'listOfFilteredAverage') {
@@ -762,6 +761,7 @@ function displayFilteredData(list, id) {
             cell.textContent = c;
         });
     });
+    filteredDiv.style.display = "block";
 }
 
 function displayProjectHeader(tableElement, len, columnList) {
