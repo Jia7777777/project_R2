@@ -841,9 +841,9 @@ async function filterAvgPrice() {
     const list = document.getElementById('listOfFilteredAverage');
     const button = document.getElementById('filterAverage');
 
-    // if (hideButton(button, list, messageElement) == 1) {
-    //     return;
-    // }
+    if (hideButton(button, list, messageElement) == 1) {
+        return;
+    }
     
     const response = await fetch('/filterAvgPrice', {
         method: 'GET',
@@ -851,15 +851,42 @@ async function filterAvgPrice() {
             'Content-Type': 'application/json'
         }
     });
-
     const data = await response.json();
+
     if (data.success) {
-        messageElement.textContent = "Here are the results: ";
-        console.log(data.result);
-        displayFilteredData(data.result, "listOfFilteredAverage");
+        messageElement.textContent = `Here are the results:`;
+
+        const table = document.createElement('table');
+        table.style.border = '1px solid black';
+
+        const headers = ['Email'];
+        const headerRow = document.createElement('tr');
+        headers.forEach(headerText => {
+            const headerCell = document.createElement('th');
+            headerCell.textContent = headerText;
+            headerRow.appendChild(headerCell);
+            headerCell.style.borderRight = '1px solid black';
+        });
+
+        table.appendChild(headerRow);
+
+        data.result.forEach(email => {
+            const row = document.createElement('tr');
+
+            const emailCell = document.createElement('td');
+            emailCell.textContent = email;
+            emailCell.style.borderRight = '1px solid black';
+
+            row.appendChild(emailCell);
+            table.appendChild(row);
+        });
+
+        list.appendChild(table);
+        list.style.display = "block";
     } else {
-        messageElement.textContent = "Errors occured";
+        messageElement.textContent = "";
     }
+
 
 }
 
