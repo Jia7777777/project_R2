@@ -257,6 +257,20 @@ async function projectConcert(s) {
     });
 }
 
+async function filterAvgPrice() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`SELECT TPH1.email FROM TPH1, TPH2
+            WHERE TPH1.seatlocation = TPH2.seatlocation
+            GROUP BY email
+            HAVING AVG(price) > (SELECT AVG(price)
+                                 FROM TPH1, TPH2
+                                 WHERE TPH1.seatlocation = TPH2.seatlocation)`);
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchTPH1FromDb,
@@ -269,5 +283,6 @@ module.exports = {
     AggregationWithGroupBy,
     FindNumberOfTickets,
     projectConcert,
-    Division
+    Division,
+    filterAvgPrice
 };

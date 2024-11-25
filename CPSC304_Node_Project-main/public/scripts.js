@@ -694,7 +694,7 @@ async function selectTPH() {
     const messageElement = document.getElementById('selectResultMsg');
     if (responseData.success) {
         messageElement.textContent = "Filtered data shown below: ";
-        displayFilteredData(responseData.filteredResult);
+        displayFilteredData(responseData.filteredResult, 'filteredResult');
     } else {
         messageElement.textContent = "Errors contained in the input data!";
     }
@@ -721,12 +721,31 @@ function displayHeader(tableElement, len) {
         `
 }
 
-function displayFilteredData(list) {
-    const tableElement = document.getElementById('filteredResult');
+function displayAvgHeader(tableElement, len) {
+    const thead = tableElement.querySelector("thead");
+    thead.innerHTML = "";
+
+    //if there are filtered results, then diaplay the header
+    if (len !== 0)
+        thead.innerHTML += `
+        <div style="height: 400px; overflow-y: auto;">
+            <tr>
+                <th>email</th>
+            </tr>
+        </div>
+        `
+}
+
+function displayFilteredData(list, id) {
+    const tableElement = document.getElementById(id);
     const tableBody = tableElement.querySelector('tbody');
     
     //display the header columns
-    displayHeader(tableElement, list.length);
+    if (id === 'listOfFilteredAverage') {
+        displayAvgHeader(tableElement, list.length);
+    } else {
+        displayHeader(tableElement, list.length);
+    }
 
     //display the body info
     tableBody.innerHTML = "";                   //clear the outdated rows
@@ -811,6 +830,33 @@ async function projectConcert() {
     }
 }
 
+async function filterAvgPrice() {
+    const messageElement = document.getElementById('filterAverageResultMsg');
+    const list = document.getElementById('listOfFilteredAverage');
+    const button = document.getElementById('filterAverage');
+
+    // if (hideButton(button, list, messageElement) == 1) {
+    //     return;
+    // }
+    
+    const response = await fetch('/filterAvgPrice', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const data = await response.json();
+    if (data.success) {
+        messageElement.textContent = "Here are the results: ";
+        console.log(data.result);
+        displayFilteredData(data.result, "listOfFilteredAverage");
+    } else {
+        messageElement.textContent = "Errors occured";
+    }
+
+}
+
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -827,8 +873,8 @@ window.onload = function() {
     document.getElementById("retrieveTheNumberOfTickets").addEventListener("click", retrieveTheNumberOfTicketsSoldForConcert);
     document.getElementById("retrieveAudience").addEventListener("click", retrieveAudienceWhoHaveBoughtTickets);
     document.getElementById("projectionConcert").addEventListener("submit", projectConcert);
-    document.getElementById("join").addEventListener("click", retrieveAudienceWhoHaveGoToEveryConcert)
-    
+    document.getElementById("join").addEventListener("click", retrieveAudienceWhoHaveGoToEveryConcert);
+    document.getElementById("filterAverage").addEventListener("click", filterAvgPrice);
 };
 
 // General function to refresh the displayed table data. 
@@ -848,7 +894,6 @@ function hideButton(button, list, messageElement) {
         list.style.display = "none";
         button.textContent = 'Retrieve';
         button.style.background = "#3304aa";
-        list.innerHTML = '';
         return 1;
     }
 }

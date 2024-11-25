@@ -152,5 +152,20 @@ router.get('/projectConcert', async (req, res) => {
     }
 });
 
+router.get('/filterAvgPrice', async (_req, res) => {
+    const result = await appService.filterAvgPrice();
+    if (result.length >= 0) {
+        res.json({ 
+            success: true,  
+            result: result
+        });
+    } else {
+        res.status(500).json({ 
+            success: false, 
+            result: []
+        });
+    }
+});
+
 
 module.exports = router;
