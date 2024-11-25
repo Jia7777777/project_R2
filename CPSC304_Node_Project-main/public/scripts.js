@@ -607,15 +607,35 @@ function deleteAfterIdx(filterList, start) {
     }
 }
 
+function generateRecommendedValueForColumn(columnId) {
+    const colName = document.getElementById(columnId).value;
+    if (colName === 'seatNumber') {
+        return 'Enter seatnumber (0-999)';
+    } else if (colName === 'cid') {
+        return 'Enter cid (1-5)';
+    } else if (colName === 'paymentmethod') {
+        return 'Enter paymentmethod (Credit/Debit)';
+    } else if (colName === 'paymentlocation') {
+        return 'Enter paymentlocation (Online/Offline)';
+    } else if (colName === 'email') {
+        return 'Enter email (e.g. 123456@gmail.com)';
+    } else if (colName === 'seatlocation') {
+        return 'Enter seatlocation (Courtside/Suite/Middle Bowl/Lower Bowl)';
+    }
+    return 'Error!';
+}
+
+
 function addInputBox(filterList, index) {
     const newInput = document.createElement("input");
     newInput.required = true;
     newInput.id = `input_${index}`;
     newInput.type = "text";
+    newInput.placeholder = generateRecommendedValueForColumn(`column_${index-2}`);
     filterList.appendChild(newInput);
 }
 
-function addOperation(filterList, index) {
+function addAggregate(filterList, index) {
     const newDropdown = document.createElement("select");
     newDropdown.addEventListener("change", processAggregate);
     newDropdown.id = `aggregate_${index+1}`;
@@ -623,11 +643,13 @@ function addOperation(filterList, index) {
     filterList.appendChild(newDropdown);
 }
 
+//add operation dropdown box
 function addColumn(index, choice) {
     const newDropdown = document.createElement("select");
     newDropdown.id = `operation_${index}`;
     newDropdown.required = true;
     newDropdown.addEventListener("change", processOperation);
+    //add the dropdown box based on the type of selected column
     if (["paymentmethod", "paymentlocation", "email", "seatlocation"].includes(choice))
         createOperationDropdownOptionsString(newDropdown);
     else
@@ -658,15 +680,17 @@ async function processOperation(currDropdown) {
     const index = filterList.children.length;
     if(choice !== "" && currDropdown.target === filterList.lastElementChild) {    //the dropdown is selected with a value
         addInputBox(filterList, index);
-        addOperation(filterList, index);
+        addAggregate(filterList, index);
     } else if (currDropdown.target.value === "") {
         const start = Number(currDropdown.target.id.split("_")[1]);
         deleteAfterIdx(filterList, start);
     };
 }
 
+//handles the dropdown to select table columns
 async function processColumn(currDropdown) {
     const filterList = document.getElementById("filterList");
+    console.log(filterList);
     const choice = currDropdown.target.value;
     const index = filterList.children.length;
     if(choice !== "" && currDropdown.target === filterList.lastElementChild) {    //the dropdown is selected with a value
@@ -674,6 +698,8 @@ async function processColumn(currDropdown) {
         filterList.appendChild(newDropdown);
     } else if (choice !== "" && currDropdown.target !== filterList.lastElementChild) { //if you select another column with another type
         const copiedIndex = Number(currDropdown.target.id.split("_")[1]);
+        const inputBox = document.getElementById(`input_${copiedIndex+2}`);
+        inputBox.placeholder = generateRecommendedValueForColumn(`column_${copiedIndex}`);
         const newDropdown = addColumn(copiedIndex, choice);
         filterList.replaceChild(newDropdown, filterList.children[copiedIndex+1]);
     } else if (currDropdown.target.value === "") {
@@ -714,7 +740,6 @@ function displayHeader(tableElement, len) {
     if (len !== 0)
         thead.innerHTML += `
             <tr>
-                <!--Table head, need to be adjusted accordingly to align with your own.-->
                 <th>seatnumber</th>
                 <th>cid</th>
                 <th>paymentmethod</th>

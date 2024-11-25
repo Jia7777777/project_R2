@@ -93,10 +93,9 @@
 
     <h2> Insert Into CBook Tickets </h2>
     <form id="insertTPH">
-        seatNumber: <input type="number" id="insertSeatNumber" placeholder="Enter seatNumber" required> <br><br>
-        cid: <input type="number" id="insertcid" placeholder="Enter cid" required> <br><br>
-        email: <input type="email" id="insertEmail" placeholder="Enter email" required> <br><br>
-        <!-- price: <input type="text" id="insertPrice" placeholder="Enter price" maxlength="20"> <br><br> -->
+        seatNumber: <input type="number" id="insertSeatNumber" placeholder="Enter seatNumber (0-999)" required> <br><br>
+        cid: <input type="number" id="insertcid" placeholder="Enter cid (1-5)" required> <br><br>
+        email: <input type="email" id="insertEmail" placeholder="Enter email (e.g. 123456@gmail.com)" required> <br><br>
         
         <label for="dropdown_paymentmethod">Choose a paymentmethod:</label>
         <select id="dropdown_paymentmethod" name="option" required>
@@ -130,8 +129,8 @@
 
     <h2> Delete From CBook Tickets </h2>
     <form id="deleteFromTPH">
-        cid: <input type="number" id="deletecid" placeholder="Enter cid" required> <br><br>
-        seatNumber: <input type="number" id="deleteSeatNumber" placeholder="Enter Seat Number" required> <br><br>
+        cid: <input type="number" id="deletecid" placeholder="Enter cid(1-5)" required> <br><br>
+        seatNumber: <input type="number" id="deleteSeatNumber" placeholder="Enter Seat Number (0-999)" required> <br><br>
         <button type="submit" style="background-color: #f44336;"> Delete </button> <br>
     </form>
     <div id="deleteNameResultMsg"></div>
@@ -143,9 +142,9 @@
     <p>If you leave email, paymentmethod, paymentlocation or seatlocation blank, then blank means no change.
     </p>
     <form id="updataTPH1">
-        seatNumber: <input type="number" id="updateSeatNumber" placeholder="Enter seatNumber" required> <br><br>
-        cid: <input type="number" id="updatecid" placeholder="Enter cid" required> <br><br>
-        email: <input type="email" id="updateEmail" placeholder="Enter email"> <br><br>
+        seatNumber: <input type="number" id="updateSeatNumber" placeholder="Enter seatNumber (0-999)" required> <br><br>
+        cid: <input type="number" id="updatecid" placeholder="Enter cid (1-5)" required> <br><br>
+        email: <input type="email" id="updateEmail" placeholder="Enter email (e.g. 123456@gmail.com)"> <br><br>
         
         <label for="update_dropdown_paymentmethod">Choose a paymentmethod:</label>
         <select id="update_dropdown_paymentmethod" name="option">
@@ -186,7 +185,7 @@
         <div class="flexContent" style="margin-top: 2rem;">
             <h3> Retrieve Sold Tickets </h3>
             <form id="soldFromTPH">
-                Concert Title: <input style="max-width: fit-content;" type="text" id="concertTitle" placeholder="Enter concert title" required> <br><br>
+                Concert Title: <input style="max-width: fit-content;" type="text" id="concertTitle" placeholder="e.g. Hip Pop Evening" required> <br><br>
                 <button id="soldTickets" type="submit" class="retrieveButton"> Retrieve </button> <br>
             </form>
             <h4 id="soldResultMsg" style="display: none;"></h4>
