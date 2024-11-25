@@ -2,7 +2,7 @@
 body {
     font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
     padding: 20px;
-    max-width: 65%;
+    max-width: 70%;
     margin: auto;
     line-height: 1.6;
     background-color: #ffffff;
@@ -114,8 +114,7 @@ input::placeholder, textarea::placeholder {
     "a a"
     "b b"
     "c c";
-    background: rgb(238,174,202);
-    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+    background: linear-gradient(to right, #FF4E50, #F9D423);
     border-radius: 20px;
     position: absolute;
 }

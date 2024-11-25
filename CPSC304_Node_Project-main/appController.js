@@ -63,9 +63,9 @@ router.post("/delete-tickets", async (req, res) => {
     }
 });
 
-// GET endpoint for joining concert and TPH1
-router.get("/get-unsold-seatInfo", async (req, res) => {
-    const title = req.query.title;
+// POST endpoint for joining concert and TPH1
+router.post("/get-unsold-seatInfo", async (req, res) => {
+    const { title } = req.body;
     const seatInfo = await appService.joinTPH1ANDConcert(title);
     if (seatInfo.length > 0) {
         res.json({ success: true, seatInfo});

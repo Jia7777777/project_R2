@@ -36,7 +36,7 @@ async function checkDbConnection() {
     });
 }
 
-// Fetches data from the demotable and displays it.
+// Fetches data from the TPH1 and displays it.
 async function fetchAndDisplayUsers() {
     const tableElement = document.getElementById('TPH1');
     const tableBody = tableElement.querySelector('tbody');
@@ -62,7 +62,7 @@ async function fetchAndDisplayUsers() {
     });
 }
 
-// Fetches data from the demotable and displays it.
+// Fetches data from the TPH1 and displays it.
 async function fetchAndDisplayFiltered() {
     const tableElement = document.getElementById('TPH1');
     const tableBody = tableElement.querySelector('tbody');
@@ -168,19 +168,24 @@ async function deleteFromTPH(event) {
 
 async function retrieveSoldSeatNumbers(event) {
     event.preventDefault();
+    const titleValue = document.getElementById('concertTitle').value;
 
     const response = await fetch('/get-unsold-seatInfo', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({ title: titleValue })
     });
 
     const responseData = await response.json();
+    const messageElement = document.getElementById('soldResultMsg');
+    const list = document.getElementById('listOfUnsoldTickets');
+    list.innerHTML = ''; 
+
 
     if (responseData.success && responseData.seatInfo) {
         messageElement.textContent = `Here are the tickets sold for ${titleValue}:`;
-
         const table = document.createElement('table');
         table.style.border = '1px solid black';
 
@@ -212,6 +217,7 @@ async function retrieveSoldSeatNumbers(event) {
         });
 
         list.appendChild(table);
+        list.style.display="block";
     } else {
         messageElement.textContent = "Error retrieving data!";
     }
@@ -326,6 +332,7 @@ async function retrieveAudienceWhoHaveBoughtTickets(event) {
         });
 
         list.appendChild(table);
+        list.style.display = "block";
     } else {
         messageElement.textContent = "Error retrieving data!";
     }
@@ -700,15 +707,17 @@ function displayHeader(tableElement, len) {
     //if there are filtered results, then diaplay the header
     if (len !== 0)
         thead.innerHTML += `
-        <tr>
-            <!--Table head, need to be adjusted accordingly to align with your own.-->
-            <th>seatnumber</th>
-            <th>cid</th>
-            <th>paymentmethod</th>
-            <th>paymentlocation</th>
-            <th>email</th>
-            <th>seatlocation</th>
-        </tr>
+        <div style="height: 400px; overflow-y: auto;">
+            <tr>
+                <!--Table head, need to be adjusted accordingly to align with your own.-->
+                <th>seatnumber</th>
+                <th>cid</th>
+                <th>paymentmethod</th>
+                <th>paymentlocation</th>
+                <th>email</th>
+                <th>seatlocation</th>
+            </tr>
+        </div>
         `
 }
 
@@ -836,6 +845,7 @@ function hideButton(button, list, messageElement) {
         return 0;
     } else {
         messageElement.style.display = 'none';
+        list.style.display = "none";
         button.textContent = 'Retrieve';
         button.style.background = "#3304aa";
         list.innerHTML = '';

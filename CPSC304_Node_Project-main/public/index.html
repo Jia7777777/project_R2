@@ -32,21 +32,23 @@
     <!-- Show 'Demotable'. 
         Data will be fetched and inserted here dynamically using JavaScript. -->
     <h2>TPH1</h2>
-    <table id="TPH1" border="1">
-        <thead>
-            <tr>
-                <!--Table head, need to be adjusted accordingly to align with your own.-->
-                <th>seatnumber</th>
-                <th>cid</th>
-                <th>paymentmethod</th>
-                <th>paymentlocation</th>
-                <th>email</th>
-                <th>seatlocation</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
+    <div style="height: 400px; overflow-y: auto;">
+        <table id="TPH1" border="1">
+            <thead>
+                <tr>
+                    <!--Table head, need to be adjusted accordingly to align with your own.-->
+                    <th>seatnumber</th>
+                    <th>cid</th>
+                    <th>paymentmethod</th>
+                    <th>paymentlocation</th>
+                    <th>email</th>
+                    <th>seatlocation</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
     </table>
+    </div>
 
     <br><hr><br> <!-- ========================================================================= -->
 
@@ -77,12 +79,14 @@
     </form>
     <!-- A placeholder to display messages after filtering. -->
     <div id="selectResultMsg"></div>
-    <table id="filteredResult" border="1">
-        <thead>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div style="height: 400px; overflow-y: auto;">
+        <table id="filteredResult" border="1">
+            <thead>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 
     <br><hr><br> <!-- ========================================================================= -->
 
@@ -186,7 +190,7 @@
                 <button type="submit" class="retrieveButton"> Retrieve </button> <br>
             </form>
             <h4 id="soldResultMsg"></h4>
-            <div id="listOfUnsoldTickets"></div>
+            <div id="listOfUnsoldTickets" style="height: 400px; overflow-y: auto; display: none;" ></div>
         </div>
         <div class="flexContent" style="margin-top: 2rem;">
             <h3> Retrieve number of tickets sold per Concert </h3>
@@ -199,7 +203,7 @@
             <h3> Retrieve Audience Who Has Bought Tickets </h3>
             <button id="retrieveAudience" class="retrieveButton"> Retrieve </button> <br>
             <h4 id="retrieveAudienceResultMsg" style="display: none;"></h4>
-            <div id="listOfAudience"></div>
+            <div id="listOfAudience" style="height: 400px; overflow-y: auto; display: none;"></div>
         </div>
 
         <div class="flexContent">

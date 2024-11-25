@@ -80,7 +80,7 @@ async function testOracleConnection() {
 
 async function fetchTPH1FromDb() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM TPH1 FETCH FIRST 10 ROWS ONLY');
+        const result = await connection.execute('SELECT * FROM TPH1');
         return result.rows;
     }).catch(() => {
         return [];
