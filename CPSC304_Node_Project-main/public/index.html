@@ -187,16 +187,16 @@
             <h3> Retrieve Sold Tickets </h3>
             <form id="soldFromTPH">
                 Concert Title: <input style="max-width: fit-content;" type="text" id="concertTitle" placeholder="Enter concert title" required> <br><br>
-                <button type="submit" class="retrieveButton"> Retrieve </button> <br>
+                <button id="soldTickets" type="submit" class="retrieveButton"> Retrieve </button> <br>
             </form>
-            <h4 id="soldResultMsg"></h4>
+            <h4 id="soldResultMsg" style="display: none;"></h4>
             <div id="listOfUnsoldTickets" style="height: 400px; overflow-y: auto; display: none;" ></div>
         </div>
         <div class="flexContent" style="margin-top: 2rem;">
             <h3> Retrieve number of tickets sold per Concert </h3>
             <button id="retrieveTheNumberOfTickets" class="retrieveButton"> Retrieve </button> <br>
-            <h4 id="retrieveResultMsg"></h4>
-            <div id="listOfTheNumberOfTickets"></div>
+            <h4 id="retrieveResultMsg" style="display: none;"></h4>
+            <div id="listOfTheNumberOfTickets" style="height: 400px; overflow-y: auto; display: none;"></div>
         </div>
 
         <div class="flexContent">
